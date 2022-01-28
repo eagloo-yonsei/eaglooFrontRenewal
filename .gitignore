@@ -1,0 +1,39 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# development
+setupProxy.js
+
+# misc
+.DS_Store
+
+# log
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+/env
+
+# build file
+dist
+.cache
+build
+
+# experiment
+foo.ts
+
+# vercel
+.vercel
+/.husky
+
+.idea
+/.idea
