@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {useFormContext} from "react-hook-form";
+import { useFormContext } from 'react-hook-form';
 
 const Input = ({ name, className = 'styled-input', ...props }) => {
   const { register } = useFormContext();
@@ -30,5 +30,6 @@ const StyledInput = styled.input`
 
   ::placeholder {
     color: #8fbdff;
+    font-family: JejuGothic;
   }
 `;
