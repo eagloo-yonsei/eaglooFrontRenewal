@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import Link from 'next/link';
 
 const HomeEntry = () => {
   return (
@@ -10,7 +11,9 @@ const HomeEntry = () => {
           누구나 입장할 수 있는 오픈 스터디룸입니다. 이글루에서 자체적으로
           제공하는 공용 스터디룸과 사용자가 직접 만든 스터디룸에 참여해 보세요!
         </div>
-        <div className="entry-button">참가하기</div>
+        <Link href="/list">
+          <div className="entry-button">참가하기</div>
+        </Link>
       </div>
       <div className="room-entry-wrap all">
         <div className="room-title">스터디룸 만들기/검색</div>
