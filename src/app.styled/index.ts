@@ -16,7 +16,7 @@ export const GlobalStyle = createGlobalStyle`
 
     --color-light-blue-000:#DEEBFF;
     --color-light-blue-100:#B8D2FF;
-    --color-light-blue-100: #9AA9FF;
+    --color-light-blue-200: #9AA9FF;
     
     --color-blue-gradient: linear-gradient(50deg, #0A4DC3, #172F8C);
 
@@ -30,6 +30,8 @@ export const GlobalStyle = createGlobalStyle`
     --color-orange-200: #F47B20;
     --color-orange-300: #F16223;
     --color-orange-400: #F15A24;
+    
+    --color-orange-gradient: linear-gradient(50deg, #F7931E, #F15A24);
   }
   
   ${reset};
@@ -42,20 +44,15 @@ export const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: border-box;
   }
-
-  //html, body, #__next {
-  //  width: 100vw;
-  //  min-width: 1024px;
-  //  height: 100%;
-  //  min-height: 100vh;
-  //}
   
   html {
-    width: 100%;
+    width: 100vw;
+    height: 100vh;
+    min-height: 768px;
     min-width: 1024px;
   }
 
-  body {
+  body {    
     background: var(--color-blue-gradient);
   }
 `;

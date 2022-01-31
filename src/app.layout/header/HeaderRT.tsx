@@ -7,7 +7,6 @@ import { faUserAlt } from '@fortawesome/free-solid-svg-icons';
 const HeaderRT = ({ getUser }) => {
   const { isLoading, login, info } = getUser;
 
-  console.log(info);
   return (
     <StyledWrapper>
       <div className="user-info-wrap">
