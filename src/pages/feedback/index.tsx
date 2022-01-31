@@ -1,3 +1,4 @@
+import { fadeIn } from 'app.styled/keyframe';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -7,4 +8,6 @@ const Page_Feedback = () => {
 
 export default Page_Feedback;
 
-const StyledWrapper = styled.div``;
+const StyledWrapper = styled.div`
+  animation: ${fadeIn} 500ms;
+`;

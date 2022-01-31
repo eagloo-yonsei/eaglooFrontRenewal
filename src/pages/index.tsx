@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import ScreenHome from 'app.feature/home/screen/ScreenHome';
+import { fadeIn } from 'app.styled/keyframe';
 
 const Page_Home: any = () => {
   return (
@@ -17,4 +18,5 @@ const StyledWrapper = styled.div`
   height: 100%;
   width: 80%;
   margin: 0 auto;
+  animation: ${fadeIn} 500ms;
 `;
