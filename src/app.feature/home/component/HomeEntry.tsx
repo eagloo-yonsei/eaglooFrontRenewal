@@ -58,9 +58,8 @@ const StyledWrapper = styled.div`
       right: 25px;
       bottom: 20px;
       border-radius: 15px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      text-align: center;
+      line-height: 40px;
       width: 140px;
       height: 40px;
       font-size: 22px;
