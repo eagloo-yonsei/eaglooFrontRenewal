@@ -1,32 +1,27 @@
 import React from 'react';
 import styled from 'styled-components';
-import Link from 'next/link';
 import Input from 'app.components/Input/Input';
 import Button from 'app.components/Button/Button';
 
 type TProps = {
-  isLoading: boolean;
+  isSending: boolean;
 };
 
-const LoginForm: React.FC<TProps> = ({ isLoading }) => {
+const SignUpForm: React.FC<TProps> = ({ isSending }) => {
   return (
     <StyledWrapper>
       <div className="email-input-wrap">
-        <Input name="email" type="text" placeholder="id" />
+        <Input name="email" type="text" placeholder="연세 메일 주소" />
         <div className="email-placeholder">@yonsei.ac.kr</div>
       </div>
-      <Input name="password" type="password" placeholder="password" />
-      <Button type="submit" disabled={isLoading} isLoading={isLoading}>
-        로그인하기
+      <Button type="submit" disabled={isSending} isLoading={isSending}>
+        인증메일 보내기
       </Button>
-      <div className="sign-up-button">
-        <Link href="/signup">회원가입</Link>
-      </div>
     </StyledWrapper>
   );
 };
 
-export default LoginForm;
+export default SignUpForm;
 
 const StyledWrapper = styled.div`
   .styled-input {
@@ -43,20 +38,6 @@ const StyledWrapper = styled.div`
       color: var(--color-gray-100);
       font-size: 18px;
       font-family: 'JejuGothic';
-    }
-  }
-
-  .styled-button {
-    margin-bottom: 45px;
-  }
-
-  .sign-up-button {
-    text-align: center;
-    font-size: 16px;
-    font-family: 'JejuGothic';
-
-    a {
-      color: var(--color-light-blue-100);
     }
   }
 `;

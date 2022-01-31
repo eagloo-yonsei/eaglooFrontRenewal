@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
+import { useRouter } from 'next/router';
 import ScreenLogin from 'app.feature/login/screen/ScreenLogin';
 import { useGetUser } from 'app.store/intoAPP/store.intoAPP';
-import { useRouter } from 'next/router';
 
 const Page_Login = () => {
   const getUser = useGetUser();

@@ -1,25 +1,46 @@
 import React from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserAlt } from '@fortawesome/free-solid-svg-icons';
+import { useStoreIntoAPP } from 'app.store/intoAPP/store.intoAPP';
 
 const HeaderRT = ({ getUser }) => {
-  const { isLoading, login, info } = getUser;
+  const logoutAuthUser = useStoreIntoAPP((state) => state.logoutAuthUser);
+  const { login, info } = getUser;
+  const router = useRouter();
 
-  console.log(info);
+  const handleLogin = () => {
+    router.push('/login');
+  };
+
   return (
     <StyledWrapper>
-      <div className="user-info-wrap">
-        <div className="user-info">{info?.nickname ?? info?.email} 님</div>
-        <div className="user-image">
-          <FontAwesomeIcon icon={faUserAlt} />
-        </div>
-        <div className="user-profile">
-          <Link href="/profile">내 정보</Link>
-        </div>
-      </div>
-      <div className="logout-button">로그아웃</div>
+      {login ? (
+        <>
+          <div className="user-info-wrap">
+            <div className="user-info">{info?.nickname ?? info?.email} 님</div>
+            <div className="user-image">
+              <FontAwesomeIcon icon={faUserAlt} />
+            </div>
+            <div className="user-profile">
+              <Link href="/profile">내 정보</Link>
+            </div>
+          </div>
+          <div className="logout-button" onClick={logoutAuthUser}>
+            로그아웃
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="user-info-wrap">로그인해주세요.</div>
+
+          <div className="logout-button" onClick={handleLogin}>
+            로그인
+          </div>
+        </>
+      )}
     </StyledWrapper>
   );
 };

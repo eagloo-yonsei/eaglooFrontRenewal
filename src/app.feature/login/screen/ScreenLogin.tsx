@@ -6,7 +6,6 @@ import LogoBox from 'app.components/LogoBox/LogoBox';
 import LoginForm from 'app.feature/login/component/LoginForm';
 import API from 'app.modules/api';
 import { destroyCookie, setCookie } from 'nookies';
-import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 import {
   toastErrorMessage,

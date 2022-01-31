@@ -1,17 +1,33 @@
 import React, { useEffect } from 'react';
+import styled from 'styled-components';
+import io from 'socket.io-client';
 import AdminLayout from './AdminLayout';
 import AppLayout from './AppLayout';
-import styled from 'styled-components';
 import { useGetUser, useStoreIntoAPP } from 'app.store/intoAPP/store.intoAPP';
 
 const App = ({ componentContent }) => {
-  // TO DO: 어드민 계정 여부 확인
   const intoAPPGetUser = useStoreIntoAPP((state) => state.requestAuthUser);
+  const setSocket = useStoreIntoAPP((state) => state.setSocket);
+
   const getUser = useGetUser();
-  const { isLoading, info } = getUser;
+  const { isLoading, socket, login, info } = getUser;
   useEffect(() => {
     intoAPPGetUser();
   }, []);
+
+  useEffect(() => {
+    if (login) {
+      if (info && !info.isAdmin && !socket) {
+        let socket = io(process.env.EAGLOO_API_URI, {
+          query: { userInfo: JSON.stringify(info) },
+        });
+        setSocket(socket);
+      }
+    } else {
+      socket?.disconnect();
+      setSocket(undefined);
+    }
+  }, [isLoading, login]);
 
   console.log(getUser);
 

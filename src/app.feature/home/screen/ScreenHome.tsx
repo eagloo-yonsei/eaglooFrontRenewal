@@ -1,10 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
+import HomeBanner from 'app.feature/home/component/HomeBanner';
+import HomeEntry from 'app.feature/home/component/HomeEntry';
 
 const ScreenHome = () => {
-  return <StyledWrapper>홈페이지</StyledWrapper>;
+  return (
+    <StyledWrapper>
+      <HomeBanner />
+      <HomeEntry />
+    </StyledWrapper>
+  );
 };
 
 export default ScreenHome;
 
-const StyledWrapper = styled.div``;
+const StyledWrapper = styled.div`
+  .room-wrap {
+    display: flex;
+  }
+`;
