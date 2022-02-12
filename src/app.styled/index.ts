@@ -46,14 +46,11 @@ export const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
   
-  html {
+  html, body, #__next {
     width: 100vw;
+    min-width: 1024px;
     height: 100vh;
     min-height: 768px;
-    min-width: 1024px;
-  }
-
-  body {    
     background: var(--color-blue-gradient);
   }
 `;

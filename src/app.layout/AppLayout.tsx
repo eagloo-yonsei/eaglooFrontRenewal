@@ -16,13 +16,11 @@ export default AppLayout;
 const StyledWrapper = styled.div`
   width: 100vw;
   min-width: 1024px;
-  height: 100%;
-  min-height: 100vh;
-  background-color: var(--color-blue-gradient);
+  height: 100vh;
+  min-height: 768px;
 
   .app-component {
-    width: 100vw;
-    min-width: 1024px;
-    height: 100%;
+    height: calc(100vh - 160px);
+    min-height: calc(100% - 160px);
   }
 `;
