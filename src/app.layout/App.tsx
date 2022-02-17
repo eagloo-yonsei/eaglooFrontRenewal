@@ -42,5 +42,4 @@ const StyledWrapper = styled.div`
   width: 100vw;
   min-width: 1024px;
   height: 100%;
-  min-height: 100vh;
 `;

@@ -47,17 +47,17 @@ const ScreenList = () => {
 export default ScreenList;
 
 const StyledWrapper = styled.div`
-  padding-bottom: 70px;
-  height: calc(100vh - 160px);
+  height: 100%;
 
   .scroll-box {
     overflow-y: scroll;
     padding-right: 20px;
-    height: 100%;
+    height: calc(100% - 47px);
   }
 
   .close-button-wrap {
     text-align: end;
+    height: 32px;
     margin-bottom: 15px;
 
     svg {

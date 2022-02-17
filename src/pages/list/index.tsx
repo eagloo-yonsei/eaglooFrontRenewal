@@ -14,12 +14,12 @@ const Page_List = () => {
 export default Page_List;
 
 const StyledWrapper = styled.div`
-  padding: 35px 70px 0 70px;
+  padding: 35px 70px 0;
   border-radius: 35px 35px 0 0;
   margin: 0 auto;
-  max-height: calc(100vh - 160px);
   overflow: hidden;
   width: 80%;
+  height: 100%;
   background-color: var(--color-white);
   animation: ${fadeIn} 500ms;
 `;
