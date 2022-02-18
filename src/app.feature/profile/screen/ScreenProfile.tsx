@@ -6,6 +6,7 @@ import { toastErrorMessage } from 'app.modules/util/ToastMessage';
 import ProfileForm from 'app.feature/profile/component/ProfileForm';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import Button from 'app.components/Button/Button';
 
 const ScreenProfile = () => {
   const methods = useForm();
@@ -33,15 +34,15 @@ const ScreenProfile = () => {
             setPasswordLength={setPasswordLength}
           />
           <div className="profile-form-button">
-            <div className="cancel-button" onClick={() => router.back()}>
+            <Button className="cancel-button" onClick={() => router.back()}>
               취소
-            </div>
-            <div
+            </Button>
+            <Button
               className="submit-button"
               onClick={methods.handleSubmit(handleProfileEdit)}
             >
               정보 변경
-            </div>
+            </Button>
           </div>
         </form>
       </FormProvider>
