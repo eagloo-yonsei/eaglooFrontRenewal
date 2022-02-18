@@ -1,18 +1,37 @@
 import React from 'react';
-import styled from 'styled-components';
-import LottieColorfulLoading from 'app.components/Lottie/LottieColorfulLoading';
+import styled, { css } from 'styled-components';
+import { CircularProgress } from '@material-ui/core';
 
 const Button = ({
   className = 'styled-button',
   type = 'button',
+  cssStyle = null,
+  isLoading = false,
+  disabled = false,
+  block = false,
+  ringSize = 30,
+  fontSize = '22px',
+  width = '100%',
+  height = '46px',
   children,
-  isLoading,
   ...props
 }) => {
   return (
-    <StyledButton className={className} type={type}>
-      {children}
-      {/*{isLoading ? <LottieColorfulLoading /> : children}*/}
+    <StyledButton
+      className={className}
+      type={type}
+      cssStyle={cssStyle}
+      disabled={disabled || isLoading}
+      width={width}
+      height={height}
+      fontSize={fontSize}
+      {...props}
+    >
+      {isLoading ? (
+        <CircularProgress color="inherit" size={ringSize} thickness={5} />
+      ) : (
+        children
+      )}
     </StyledButton>
   );
 };
@@ -20,32 +39,27 @@ const Button = ({
 export default Button;
 
 const StyledButton = styled.button`
-  cursor: pointer;
-  width: 100%;
-  height: 46px;
-  color: var(--color-white);
-  background: transparent
-    linear-gradient(
-      90deg,
-      var(--color-orange-400) 9%,
-      var(--color-orange-300) 32%,
-      var(--color-orange-200) 69%,
-      var(--color-orange-100) 98%
-    )
-    0% 0% no-repeat padding-box;
-  box-shadow: 0px 0px 19px var(--color-gray-200);
-  border-radius: 8px;
-  font-size: 22px;
-  font-family: 'JejuGothic';
-  position: relative;
-  border: none;
-  transition: 200ms;
+  ${({ disabled, block, cssStyle, width, height, fontSize }) => css`
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 200ms;
+    position: relative;
+    border: none;
+    width: ${width};
+    height: ${height};
+    line-height: ${height};
+    text-align: center;
+    color: var(--color-white);
+    border-radius: 8px;
+    background: ${disabled ? '#c4c4c4' : 'var(--color-orange-gradient)'};
+    font-size: ${fontSize};
+    font-family: 'JejuGothic';
+    ${cssStyle};
 
-  &:hover {
-    opacity: 0.8;
-  }
-
-  .styled-lottie {
-    position: absolute;
-  }
+    &:hover {
+      opacity: ${disabled ? 1 : 0.7};
+    }
+  `}
 `;

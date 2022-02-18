@@ -14,7 +14,7 @@ const SignUpForm: React.FC<TProps> = ({ isSending }) => {
         <Input name="email" type="text" placeholder="연세 메일 주소" />
         <div className="email-placeholder">@yonsei.ac.kr</div>
       </div>
-      <Button type="submit" disabled={isSending} isLoading={isSending}>
+      <Button type="submit" isLoading={isSending} fontSize="18px">
         인증메일 보내기
       </Button>
     </StyledWrapper>
