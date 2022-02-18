@@ -16,7 +16,7 @@ const LoginForm: React.FC<TProps> = ({ isLoading }) => {
         <div className="email-placeholder">@yonsei.ac.kr</div>
       </div>
       <Input name="password" type="password" placeholder="password" />
-      <Button type="submit" disabled={isLoading} isLoading={isLoading}>
+      <Button type="submit" isLoading={isLoading}>
         로그인하기
       </Button>
       <div className="sign-up-button">
