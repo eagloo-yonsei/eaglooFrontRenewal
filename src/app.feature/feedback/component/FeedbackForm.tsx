@@ -18,7 +18,7 @@ export default FeedbackForm;
 
 const StyledWrapper = styled.textarea`
   width: 100%;
-  height: calc(100% - 100px);
+  height: calc(100% - 150px);
   padding: 24px;
   font-size: 21px;
   line-height: 32px;

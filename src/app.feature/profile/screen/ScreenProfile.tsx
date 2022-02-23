@@ -1,27 +1,46 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { useRouter } from 'next/router';
 import { FormProvider, useForm } from 'react-hook-form';
 import API from 'app.modules/api';
-import { toastErrorMessage } from 'app.modules/util/ToastMessage';
-import ProfileForm from 'app.feature/profile/component/ProfileForm';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
 import Button from 'app.components/Button/Button';
+import ProfileForm from 'app.feature/profile/component/ProfileForm';
+import ProfileModal from 'app.feature/profile/component/ProfileModal';
+import { toastErrorMessage } from 'app.modules/util/ToastMessage';
+import { useGetUser } from 'app.store/intoAPP/store.intoAPP';
 
 const ScreenProfile = () => {
+  const getUser = useGetUser();
   const methods = useForm();
-  const router = useRouter();
+  const { watch } = methods;
 
+  const router = useRouter();
+  const [nicknameChangeConfirmed, setNicknameChangeConfirmed] =
+    useState<boolean>(getUser.info?.nickName ? true : false);
   const [nicknameConfirm, setNicknameConfirm] = useState(false);
   const [passwordConfirm, setPasswordConfirm] = useState(true);
   const [passwordLength, setPasswordLength] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
 
   const handleProfileEdit = async (formData) => {
     console.log(formData);
+    handleClose();
+  };
+
+  const handleClose = () => {
+    setIsVisible(!isVisible);
   };
 
   return (
     <StyledWrapper>
+      <ProfileModal
+        nicknameInput={watch()?.nickname}
+        isVisible={isVisible}
+        handleClose={handleClose}
+        nicknameConfirm={nicknameConfirm}
+        nicknameChangeConfirmed={nicknameChangeConfirmed}
+        setNicknameChangeConfirmed={setNicknameChangeConfirmed}
+      />
       <div className="profile-title">내 정보 관리</div>
       <FormProvider {...methods}>
         <form>
@@ -34,7 +53,16 @@ const ScreenProfile = () => {
             setPasswordLength={setPasswordLength}
           />
           <div className="profile-form-button">
-            <Button className="cancel-button" onClick={() => router.back()}>
+            <Button
+              className="cancel-button"
+              onClick={() => router.back()}
+              cssStyle={css`
+                background: none;
+                font-family: JejuGothic;
+                color: var(--color-blue-000);
+                border: 2px solid var(--color-blue-000);
+              `}
+            >
               취소
             </Button>
             <Button

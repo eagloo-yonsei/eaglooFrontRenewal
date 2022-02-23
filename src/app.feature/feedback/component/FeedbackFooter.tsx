@@ -1,12 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
 import Button from 'app.components/Button/Button';
+import { useFormContext } from 'react-hook-form';
 
 const FeedbackFooter = ({ submitting }) => {
+  const { watch } = useFormContext();
   return (
     <StyledWrapper>
       <Button
         type="submit"
+        disabled={
+          !watch()?.category || !watch()?.content || !watch()?.content?.length
+        }
         isLoading={submitting}
         width="120px"
         fontSize="16px"

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { useForm, useFormContext } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import API from 'app.modules/api';
 import { toastErrorMessage } from 'app.modules/util/ToastMessage';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { API_USER_NICKNAME } from 'app.modules/api/eagloo.profile';
+import Button from 'app.components/Button/Button';
 
 const ProfileForm = ({
   nicknameConfirm,
@@ -14,9 +15,11 @@ const ProfileForm = ({
   setPasswordLength,
 }) => {
   const { handleSubmit, register, watch, getValues } = useFormContext();
+  const [confirming, setConfirming] = useState(false);
 
   const handleNicknameConfirm = async () => {
     try {
+      setConfirming(true);
       const nickNameInput = getValues().nickname;
       console.log(nickNameInput);
       if (nickNameInput.length < 3) {
@@ -36,6 +39,8 @@ const ProfileForm = ({
     } catch (err) {
       console.log(err);
       toastErrorMessage('닉네임 중복 확인 중 오류가 발생했어요');
+    } finally {
+      setConfirming(false);
     }
   };
 
@@ -52,9 +57,14 @@ const ProfileForm = ({
               onChange={() => setNicknameConfirm(false)}
             />
           </div>
-          <div className="item-button" onClick={handleNicknameConfirm}>
+          <Button
+            disabled={nicknameConfirm}
+            isLoading={confirming}
+            className="item-button"
+            onClick={handleNicknameConfirm}
+          >
             중복 확인
-          </div>
+          </Button>
           {nicknameConfirm ? (
             <div className="item-info ok">사용 가능한 닉네임입니다</div>
           ) : (
@@ -187,7 +197,6 @@ const StyledWrapper = styled.div`
         font-size: 12px;
         font-family: JejuGothic;
         border-radius: 8px;
-        background: var(--color-orange-gradient);
         margin-right: 12px;
       }
 

@@ -12,7 +12,12 @@ class _AppDocument extends Document {
       ctx.renderPage = () =>
         originalRenderPage({
           enhanceApp: (App) => (props) =>
-            sheet.collectStyles(<App {...props} />),
+            sheet.collectStyles(
+              <>
+                <GlobalStyle />
+                <App {...props} />
+              </>
+            ),
         });
 
       const initialProps = await Document.getInitialProps(ctx);

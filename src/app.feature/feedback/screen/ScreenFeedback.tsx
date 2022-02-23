@@ -64,4 +64,9 @@ export default ScreenFeedback;
 
 const StyledWrapper = styled.div`
   height: 100%;
+
+  form {
+    display: block;
+    height: 100%;
+  }
 `;

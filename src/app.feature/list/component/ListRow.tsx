@@ -4,8 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserAlt } from '@fortawesome/free-solid-svg-icons';
 
 const ListRow = ({ roomType, roomList, handleEntryRoom }) => {
-  console.log(roomList);
-
   return (
     <StyledWrapper>
       <div className={`room-list-title ${roomType}`}>
