@@ -13,7 +13,22 @@ export const useStoreIntoAPP = create<any>((set) => ({
     set((state) => ({
       getUser: {
         ...state.getUser,
-        ...data,
+        info: {
+          ...state.getUser.info,
+          ...data,
+        },
+      },
+    }));
+  },
+
+  setUserInfo: async (data): Promise<any> => {
+    set((state) => ({
+      getUser: {
+        ...state.getUser,
+        info: {
+          ...state.getUser.info,
+          ...data,
+        },
       },
     }));
   },
