@@ -18,7 +18,11 @@ const Page_Room = () => {
         userInfo={getUser?.info}
         socketRef={getUser?.socket}
       >
-        <ScreenRoom roomUsingInfo={roomUsingInfo} userInfo={getUser?.info} />
+        <ScreenRoom
+          roomUsingInfo={roomUsingInfo}
+          userInfo={getUser?.info}
+          socketRef={getUser?.socket}
+        />
       </ScreenRoomProvider>
     </StyledWrapper>
   );
