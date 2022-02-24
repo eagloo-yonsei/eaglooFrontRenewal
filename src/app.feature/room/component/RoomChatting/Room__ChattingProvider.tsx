@@ -47,7 +47,7 @@ export default function RoomChattingProvider({
   userInfo,
   roomUsingInfo,
   children,
-}: ChildrenProp) {
+}) {
   const { chattingOpen } = useRoomContext();
   const [chattingInput, setChattingInput] = useState<string>('');
   const [chattings, setChattings] = useState<ChattingContent[]>([]);

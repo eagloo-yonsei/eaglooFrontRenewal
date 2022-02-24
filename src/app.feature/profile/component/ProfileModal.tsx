@@ -4,6 +4,7 @@ import Modal from 'app.components/Modal/Modal';
 
 const ProfileModal = ({
   nicknameInput,
+  passwordInput,
   isVisible,
   handleClose,
   nicknameConfirm,

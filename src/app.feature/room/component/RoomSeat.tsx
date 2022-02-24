@@ -8,6 +8,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useRoomContext } from 'app.feature/room/screen/ScreenRoomProvider';
 import { PeerStateProp, SocketChannel } from 'app.modules/constant/interface';
+import TimerPerMinute from 'app.components/Timer/TimerPerMinute';
 
 interface SeatProp {
   seatNo: number;
@@ -140,7 +141,7 @@ function SelfSeat() {
   );
 }
 
-function EmptySeat({ seatNo }: SeatProp) {
+function EmptySeat({ seatNo }) {
   return (
     <EmptyContainer>
       <EmptyContainerMessage>{`${seatNo}번 참여자를`}</EmptyContainerMessage>
