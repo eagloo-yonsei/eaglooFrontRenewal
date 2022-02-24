@@ -37,4 +37,6 @@ const Page_Room = () => {
 
 export default Page_Room;
 
-const StyledWrapper = styled.div``;
+const StyledWrapper = styled.div`
+  height: 100%;
+`;

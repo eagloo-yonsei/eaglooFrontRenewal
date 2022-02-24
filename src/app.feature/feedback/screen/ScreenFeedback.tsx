@@ -1,72 +1,146 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { FormProvider, useForm } from 'react-hook-form';
-import API from 'app.modules/api';
-import FeedbackHeader from 'app.feature/feedback/component/FeedbackHeader';
-import FeedbackForm from 'app.feature/feedback/component/FeedbackForm';
-import FeedbackFooter from 'app.feature/feedback/component/FeedbackFooter';
-import { useGetUser } from 'app.store/intoAPP/store.intoAPP';
-import { FeedbackCategory } from 'app.feature/feedback/constant/FeedbackCategory';
 import {
-  toastErrorMessage,
-  toastSuccessMessage,
-} from 'app.modules/util/ToastMessage';
+  SlideUpPageContainer,
+  SelectorStyle,
+  SubmitButton,
+} from 'app.components/StyledComponents/StyledComponents';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import { useFeedbackContext } from 'app.feature/feedback/screen/ScreenFeedbackProvider';
+import { FeedbackCategory } from 'app.modules/constant/interface';
 
-const ScreenFeedback = () => {
-  const methods = useForm();
-  const { handleSubmit, setValue } = methods;
+export default function FeedbackContainer({ userInfo }) {
+  const {
+    category,
+    feedbackInput,
+    submitting,
+    setCategory,
+    setFeedbackInput,
+    submitFeedback,
+    feedbackInputRef,
+  } = useFeedbackContext();
+  const selectorStyle = SelectorStyle();
 
-  const getUser = useGetUser();
-  const [submitting, setSubmitting] = useState<boolean>(false);
-
-  const handleSubmitFeedback = async (formData) => {
-    try {
-      setSubmitting(true);
-      const res = await API.POST({
-        url: '/api/feedback',
-        data: {
-          email: getUser.info.email,
-          ...formData,
-        },
-      });
-
-      if (res.data.success) {
-        setValue('category', FeedbackCategory.GENERAL);
-        setValue('content', '');
-        toastSuccessMessage(res.data.message);
-      } else {
-        return res;
-      }
-    } catch (err) {
-      if (!err.data.message) {
-        return toastErrorMessage('피드백 제출 중 오류가 발생했습니다.');
-      }
-      toastErrorMessage(err.data.message);
-    } finally {
-      setSubmitting(false);
-    }
-  };
+  if (!userInfo) {
+    return <Container>{`로그인 이후 이용할 수 있습니다.`}</Container>;
+  }
 
   return (
-    <StyledWrapper>
-      <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(handleSubmitFeedback)}>
-          <FeedbackHeader />
-          <FeedbackForm />
-          <FeedbackFooter submitting={submitting} />
-        </form>
-      </FormProvider>
-    </StyledWrapper>
+    <Container>
+      <Header>
+        <Title>{`피드백 남기기`}</Title>
+        <CategorySelector>
+          <CategoryReminder>{`어떤 종류의 의견인가요?`}</CategoryReminder>
+          <FormControl className={selectorStyle.formControl}>
+            <Select
+              native
+              value={category}
+              onChange={(e) => {
+                const value = e.target.value as FeedbackCategory;
+                setCategory(value);
+              }}
+              inputProps={{
+                name: 'category',
+                id: 'feedbackCategorySelect',
+              }}
+            >
+              <option value={FeedbackCategory.GENERAL}>{`일반`}</option>
+              <option value={FeedbackCategory.BUG}>{`버그 신고`}</option>
+              <option value={FeedbackCategory.SUGGESTION}>{`기능 제안`}</option>
+              <option
+                value={FeedbackCategory.ENHANCEMENT}
+              >{`개선점 건의`}</option>
+            </Select>
+          </FormControl>
+        </CategorySelector>
+      </Header>
+      <ContentInput
+        ref={feedbackInputRef}
+        disabled={submitting}
+        spellCheck="false"
+        value={feedbackInput}
+        placeholder="이글루에게 전하고 싶은 의견이 있나요?&#13;&#10;우측 상단에서 범주를 선택한 후 의견을 전해주세요!"
+        onChange={(e) => {
+          if (e.target.value.length <= 2000) {
+            setFeedbackInput(e.target.value);
+          }
+        }}
+      />
+      <Footer>
+        <SubmitButton
+          buttonContent={`피드백 제출`}
+          loadingStatus={submitting}
+          submitFunction={submitFeedback}
+          disabledCondition={feedbackInput.length === 0}
+          width={`120px`}
+          fontSize={`16px`}
+        />
+      </Footer>
+    </Container>
   );
-};
+}
 
-export default ScreenFeedback;
-
-const StyledWrapper = styled.div`
+const Container = styled(SlideUpPageContainer)`
+  display: flex;
+  flex-direction: column;
+  margin: 0 !important;
+  margin-right: 0 !important;
+  justify-content: center;
+  align-items: center;
+  font-size: 32px;
   height: 100%;
+  width: 100%;
+  font-family: ${(props) => props.theme.subLabelFont};
+  padding: 80px 120px 60px 120px;
+`;
 
-  form {
-    display: block;
-    height: 100%;
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: fit-content;
+  padding: 0px 20px;
+`;
+
+const Footer = styled(Header)`
+  justify-content: flex-end;
+`;
+
+const Title = styled.div`
+  font-size: 30px;
+  font-family: ${(props) => props.theme.iconFont};
+`;
+
+const CategoryReminder = styled.div`
+  color: gray;
+  font-size: 15px;
+  font-family: ${(props) => props.theme.inButtonFont};
+`;
+
+const CategorySelector = styled.div`
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  height: fit-content;
+  gap: 18px;
+`;
+
+const ContentInput = styled.textarea`
+  width: 100%;
+  height: calc(100% - 100px);
+  padding: 24px;
+  font-size: 21px;
+  font-family: ${(props) => props.theme.subLabelFont};
+  line-height: 32px;
+  border: none;
+  border-top: 1px solid gray;
+  border-bottom: 1px solid gray;
+  border-radius: 10px;
+  resize: none;
+  margin: 35px 0px;
+  :focus {
+    outline: none;
   }
 `;

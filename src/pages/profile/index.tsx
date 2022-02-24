@@ -22,12 +22,9 @@ const Page_Profile = () => {
 export default Page_Profile;
 
 const StyledWrapper = styled.div`
-  padding: 80px 100px 40px;
-  border-radius: 35px 35px 0 0;
   margin: 0 auto;
   overflow: hidden;
-  width: 80%;
+  width: 100%;
   height: 100%;
-  background-color: var(--color-white);
   animation: ${fadeIn} 500ms;
 `;

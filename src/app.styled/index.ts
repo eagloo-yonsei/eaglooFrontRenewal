@@ -18,7 +18,7 @@ export const GlobalStyle = createGlobalStyle`
     --color-light-blue-100:#B8D2FF;
     --color-light-blue-200: #9AA9FF;
     
-    --color-blue-gradient: linear-gradient(50deg, #0A4DC3, #172F8C);
+    --color-blue-gradient: linear-gradient(50deg, rgb(26, 76, 210), rgb(40, 45, 153));
 
     --color-white: #FFFFFF;
     --color-black: #000000;

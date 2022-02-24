@@ -18,4 +18,19 @@ const StyledWrapper = styled.div`
   .room-wrap {
     display: flex;
   }
+
+  &:before {
+    content: ' ';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.4;
+    background: url('/images/common/HomeImg__Yonsei-min.png');
+    background-repeat: no-repeat;
+    background-position: right top;
+    background-size: auto 480px;
+  }
 `;

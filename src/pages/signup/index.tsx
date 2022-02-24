@@ -4,6 +4,7 @@ import ScreenSignUp from 'app.feature/signup/screen/ScreenSignUp';
 import { useGetUser } from 'app.store/intoAPP/store.intoAPP';
 import { useRouter } from 'next/router';
 import { fadeIn } from 'app.styled/keyframe';
+import ScreenSignUpProvider from 'app.feature/signup/screen/ScreenSignUpProvider';
 
 const Page_SignUp = () => {
   const getUser = useGetUser();
@@ -16,7 +17,9 @@ const Page_SignUp = () => {
   if (getUser?.isLoading || getUser?.login) return null;
   return (
     <StyledWrapper>
-      <ScreenSignUp />
+      <ScreenSignUpProvider>
+        <ScreenSignUp />
+      </ScreenSignUpProvider>
     </StyledWrapper>
   );
 };
@@ -27,6 +30,7 @@ const StyledWrapper = styled.div`
   margin: 0 auto;
   min-width: 100vw;
   min-height: 100vh;
+  justify-content: center;
   display: flex;
   align-items: center;
   animation: ${fadeIn} 500ms;

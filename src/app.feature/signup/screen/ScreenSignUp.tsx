@@ -1,53 +1,47 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { useForm, FormProvider } from 'react-hook-form';
-import LogoBox from 'app.components/LogoBox/LogoBox';
-import SignUpForm from 'app.feature/signup/component/SignUpForm';
-import API from 'app.modules/api';
-import {
-  toastErrorMessage,
-  toastMailSendSuccessMessage,
-} from 'app.modules/util/ToastMessage';
+import { useSignupContext } from 'app.feature/signup/screen/ScreenSignUpProvider';
+import EaglooIconBox from 'app.components/EaglooIconBox/EaglooIconBox';
+import SignupEmailAndSecret from 'app.feature/signup/component/Signup__EmailAndSecret';
+import SignupPassword from 'app.feature/signup/component/Signup__Password';
+import SignupNickNameAndRealName from 'app.feature/signup/component/Signup__NickNameAndRealName';
+import { FullPageContainer } from 'app.components/StyledComponents/StyledComponents';
 
-const ScreenSignUp = () => {
-  const [isSending, setIsSending] = useState(false);
-  const methods = useForm();
-
-  const handleOnSubmit = async (formData) => {
-    setIsSending(true);
-    console.log(formData);
-    const res = await API.POST({
-      url: '/api/user',
-      data: { email: formData?.email },
-    });
-
-    if (res?.data?.success) {
-      toastMailSendSuccessMessage(formData?.email);
-    } else {
-      toastErrorMessage(res.data.message);
-    }
-    setIsSending(false);
-  };
-
+export default function SignupContainer() {
   return (
-    <StyledWrapper>
-      <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(handleOnSubmit)}>
-          <LogoBox />
-          <SignUpForm isSending={isSending} />
-        </form>
-      </FormProvider>
-    </StyledWrapper>
+    <Container>
+      <InnerContainer>
+        <EaglooIconBox />
+        <InputSwitcher />
+      </InnerContainer>
+    </Container>
   );
-};
+}
 
-export default ScreenSignUp;
+function InputSwitcher() {
+  const { secretAuthenticated, completeSettingPassword } = useSignupContext();
 
-const StyledWrapper = styled.div`
+  if (!secretAuthenticated) {
+    return <SignupEmailAndSecret />;
+  } else {
+    if (!completeSettingPassword) {
+      return <SignupPassword />;
+    } else {
+      return <SignupNickNameAndRealName />;
+    }
+  }
+}
+
+const Container = styled(FullPageContainer)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const InnerContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  margin: 0 auto;
+  align-items: center;
+  gap: 15px;
   width: 300px;
-  height: 100%;
 `;

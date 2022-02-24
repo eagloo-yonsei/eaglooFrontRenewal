@@ -1,73 +1,138 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { FormProvider, useForm } from 'react-hook-form';
-import { SHA3 } from 'sha3';
-import LogoBox from 'app.components/LogoBox/LogoBox';
-import LoginForm from 'app.feature/login/component/LoginForm';
-import API from 'app.modules/api';
-import { destroyCookie, setCookie } from 'nookies';
-import { useRouter } from 'next/router';
 import {
-  toastErrorMessage,
-  toastLoginSuccessMessage,
-} from 'app.modules/util/ToastMessage';
-import { useStoreIntoAPP } from 'app.store/intoAPP/store.intoAPP';
+  FullPageContainer,
+  SubmitButton,
+  StylelessLink,
+} from 'app.components/StyledComponents/StyledComponents';
+import { useLoginContext } from 'app.feature/login/screen/ScreenLoginProvider';
+import EaglooIconBox from 'app.components/EaglooIconBox/EaglooIconBox';
 
-const _eagloo_login = '_eagloo_login';
-const _eagloo_user_info = '_eagloo_user_info';
+export default function LoginContainer() {
+  const {
+    emailInput,
+    passwordInput,
+    signingIn,
+    setEmailInput,
+    setPasswordInput,
+    signIn,
+    emailInputRef,
+  } = useLoginContext();
 
-const ScreenLogin = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const methods = useForm();
-  const router = useRouter();
-  const hashedPassword = new SHA3(512);
-  const requestAuthUser = useStoreIntoAPP((state) => state.requestAuthUser);
-
-  const handleOnSubmit = async (formData) => {
-    if (!formData.email || !formData.password)
-      return toastErrorMessage('아이디와 비밀번호를 입력해주세요!');
-
-    setIsLoading(true);
-    hashedPassword.reset();
-    hashedPassword.update(formData.password);
-
-    const res = await API.GET({
-      url: `/api/user/auth/${formData?.email}/${hashedPassword.digest('hex')}`,
-      data: {},
-    });
-
-    if (res?.data?.success) {
-      setCookie(null, _eagloo_login, 'true');
-      setCookie(null, _eagloo_user_info, JSON.stringify(res?.data?.user));
-      toastLoginSuccessMessage(res?.data?.user?.email);
-      await requestAuthUser();
-      router.push('/', null, { shallow: true });
-    } else {
-      setCookie(null, _eagloo_login, 'false');
-      destroyCookie(null, _eagloo_user_info, null);
-      toastErrorMessage(res?.data?.message);
-    }
-  };
+  useEffect(() => {
+    emailInputRef?.current?.focus();
+    return () => {};
+  }, []);
 
   return (
-    <StyledWrapper>
-      <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(handleOnSubmit)}>
-          <LogoBox />
-          <LoginForm isLoading={isLoading} />
-        </form>
-      </FormProvider>
-    </StyledWrapper>
+    <Container>
+      <InnerContainer>
+        <EaglooIconBox />
+        <EmailBoxContainer className="idboxcontainer">
+          <EmailBox
+            ref={emailInputRef}
+            disabled={signingIn}
+            type="text"
+            spellCheck="false"
+            value={emailInput}
+            placeholder="id"
+            onChange={(e) => setEmailInput(e.target.value)}
+            onKeyPress={(e) => {
+              if (e.key === 'Enter') {
+                signIn();
+              }
+            }}
+          />
+          <YonseiMailPlaceholder>{`@yonsei.ac.kr`}</YonseiMailPlaceholder>
+        </EmailBoxContainer>
+        <PasswordBox
+          disabled={signingIn}
+          type="password"
+          value={passwordInput}
+          placeholder="password"
+          onChange={(e) => {
+            setPasswordInput(e.target.value);
+          }}
+          onKeyPress={(e) => {
+            if (e.key === 'Enter') {
+              signIn();
+            }
+          }}
+        />
+        <SubmitButton
+          buttonContent={`로그인`}
+          loadingStatus={signingIn}
+          submitFunction={signIn}
+        />
+        <UtilButtonsContainer>
+          <UtilButton>
+            <StylelessLink to={`/signup`}>{`회원가입`}</StylelessLink>
+          </UtilButton>
+        </UtilButtonsContainer>
+      </InnerContainer>
+    </Container>
   );
-};
+}
 
-export default ScreenLogin;
+const Container = styled(FullPageContainer)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
-const StyledWrapper = styled.div`
+const InnerContainer = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
+  width: 300px;
+`;
+
+const EmailBoxContainer = styled.div`
+  position: relative;
+  width: 100%;
+`;
+
+const YonseiMailPlaceholder = styled.h4`
+  position: absolute;
+  top: 15px;
+  right: 12px;
+  color: ${(props) => props.theme.mailPlaceholder};
+  font-size: 18px;
+  font-family: ${(props) => props.theme.subLabelFont};
+`;
+
+const InputBox = styled.input`
+  width: 100%;
+  height: 46px;
+  font-size: 18px;
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 0 12px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 8px;
+  :focus {
+    outline: none;
+  }
+  ::placeholder {
+    color: ${(props) => props.theme.placeholder};
+  }
+`;
+
+const EmailBox = styled(InputBox)``;
+
+const PasswordBox = styled(InputBox)``;
+
+const UtilButtonsContainer = styled.div`
+  display: flex;
   justify-content: center;
-  margin: 0 auto;
-  width: 380px;
-  height: 100%;
+  /* justify-content: space-between; */
+  width: 92%;
+  margin-top: 45px;
+  /* margin-bottom: 30px; */
+`;
+
+const UtilButton = styled.div`
+  color: ${(props) => props.theme.entryLightBlue};
+  font-size: 16px;
+  font-family: 'JejuGothic';
 `;

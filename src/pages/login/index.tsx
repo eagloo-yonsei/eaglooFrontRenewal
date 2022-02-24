@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import ScreenLogin from 'app.feature/login/screen/ScreenLogin';
 import { useGetUser } from 'app.store/intoAPP/store.intoAPP';
 import { fadeIn } from 'app.styled/keyframe';
+import ScreenLoginProvider from 'app.feature/login/screen/ScreenLoginProvider';
 
 const Page_Login = () => {
   const getUser = useGetUser();
@@ -16,7 +17,9 @@ const Page_Login = () => {
   if (getUser?.isLoading || getUser?.login) return null;
   return (
     <StyledWrapper>
-      <ScreenLogin />
+      <ScreenLoginProvider>
+        <ScreenLogin />
+      </ScreenLoginProvider>
     </StyledWrapper>
   );
 };
@@ -29,5 +32,6 @@ const StyledWrapper = styled.div`
   min-height: 100vh;
   display: flex;
   align-items: center;
+  justify-content: center;
   animation: ${fadeIn} 500ms;
 `;

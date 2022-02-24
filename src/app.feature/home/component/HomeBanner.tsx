@@ -4,9 +4,9 @@ import styled from 'styled-components';
 const HomeBanner = () => {
   return (
     <StyledWrapper>
-      <div className="home-banner-img">
-        <img src="/images/common/HomeImg__Yonsei-min.png" />
-      </div>
+      {/*<div className="home-banner-img">*/}
+      {/*  <img src="/images/common/HomeImg__Yonsei-min.png" />*/}
+      {/*</div>*/}
       <div className="home-title">
         <div className="title-text">
           연세대학교
@@ -30,6 +30,7 @@ export default HomeBanner;
 
 const StyledWrapper = styled.div`
   color: var(--color-white);
+  position: relative;
 
   .home-banner-img {
     position: absolute;
