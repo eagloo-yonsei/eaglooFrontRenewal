@@ -1,16 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useGetUser } from 'app.store/intoAPP/store.intoAPP';
 import Loading from 'app.components/Loading/Loading';
 import { useGetRoomUsingInfo } from 'app.store/roomUsingInfo/store.roomUsingInfo';
 import ScreenRoomProvider from 'app.feature/room/screen/ScreenRoomProvider';
 import ScreenRoom from 'app.feature/room/screen/ScreenRoom';
+import { useRouter } from 'next/router';
 
 const Page_Room = () => {
+  const router = useRouter();
   const getUser = useGetUser();
   const roomUsingInfo = useGetRoomUsingInfo();
 
-  if (getUser?.isLoading || roomUsingInfo?.isLoading) return <Loading />;
+  useEffect(() => {
+    if (!getUser?.login) router.push('/login');
+  }, [getUser?.isLoading, getUser?.login]);
+
+  if (getUser?.isLoading || roomUsingInfo?.isLoading || !getUser?.login)
+    return <Loading />;
   return (
     <StyledWrapper>
       <ScreenRoomProvider
