@@ -129,7 +129,9 @@ const Entry = ({ roomType, roomId, roomInfo }) => {
       endTime,
     });
 
-    router.push('/room');
+    router.push(
+      `/room?roomType=${roomType}&roomId=${roomInfo.id}&roomName=${roomInfo.roomName}&seatNo=${selectedSeatNo}&endTime=${endTime}`
+    );
   };
 
   const handleStopSelfStream = () => {

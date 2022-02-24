@@ -9,6 +9,15 @@ export const useStoreIntoAPP = create<any>((set) => ({
     info: null,
   },
 
+  updateAuthUser: async (data): Promise<any> => {
+    set((state) => ({
+      getUser: {
+        ...state.getUser,
+        ...data,
+      },
+    }));
+  },
+
   requestAuthUser: async (): Promise<any> => {
     const cookies = parseCookies();
     const userInfo = cookies['_eagloo_user_info'];

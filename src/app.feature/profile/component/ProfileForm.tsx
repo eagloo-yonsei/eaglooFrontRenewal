@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { useForm, useFormContext } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import API from 'app.modules/api';
 import { toastErrorMessage } from 'app.modules/util/ToastMessage';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { API_USER_NICKNAME } from 'app.modules/api/eagloo.profile';
+import Button from 'app.components/Button/Button';
 
 const ProfileForm = ({
   nicknameConfirm,
@@ -12,11 +13,14 @@ const ProfileForm = ({
   setPasswordConfirm,
   passwordLength,
   setPasswordLength,
+  previousPassword,
 }) => {
   const { handleSubmit, register, watch, getValues } = useFormContext();
+  const [confirming, setConfirming] = useState(false);
 
   const handleNicknameConfirm = async () => {
     try {
+      setConfirming(true);
       const nickNameInput = getValues().nickname;
       console.log(nickNameInput);
       if (nickNameInput.length < 3) {
@@ -36,6 +40,8 @@ const ProfileForm = ({
     } catch (err) {
       console.log(err);
       toastErrorMessage('닉네임 중복 확인 중 오류가 발생했어요');
+    } finally {
+      setConfirming(false);
     }
   };
 
@@ -52,9 +58,14 @@ const ProfileForm = ({
               onChange={() => setNicknameConfirm(false)}
             />
           </div>
-          <div className="item-button" onClick={handleNicknameConfirm}>
+          <Button
+            disabled={nicknameConfirm}
+            isLoading={confirming}
+            className="item-button"
+            onClick={handleNicknameConfirm}
+          >
             중복 확인
-          </div>
+          </Button>
           {nicknameConfirm ? (
             <div className="item-info ok">사용 가능한 닉네임입니다</div>
           ) : (
@@ -100,11 +111,18 @@ const ProfileForm = ({
           </div>
           <div className="item-info-wrap">
             {!passwordConfirm && (
-              <div className="item-info warn">비밀번호가 일치하지 않습니다</div>
+              <div className="item-info warn">
+                비밀번호가 일치하지 않습니다.
+              </div>
             )}
             {!passwordLength && (
               <div className="item-info warn">
-                비밀번호는 8자리 이상이어야 합니다
+                비밀번호는 8자리 이상이어야 합니다.
+              </div>
+            )}
+            {watch()?.password === previousPassword && (
+              <div className="item-info warn">
+                이전 비밀번호와 다르게 설정해주세요.
               </div>
             )}
           </div>
@@ -187,7 +205,6 @@ const StyledWrapper = styled.div`
         font-size: 12px;
         font-family: JejuGothic;
         border-radius: 8px;
-        background: var(--color-orange-gradient);
         margin-right: 12px;
       }
 

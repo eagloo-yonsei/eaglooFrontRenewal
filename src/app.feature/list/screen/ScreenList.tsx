@@ -1,12 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import ListRow from 'app.feature/list/component/ListRow';
 import useRoomList from 'app.feature/list/query/useRoomList';
+import Loading from 'app.components/Loading/Loading';
 import { useGetUser } from 'app.store/intoAPP/store.intoAPP';
-import { useRouter } from 'next/router';
+import { fadeIn } from 'app.styled/keyframe';
 
 const ScreenList = () => {
   const router = useRouter();
@@ -19,7 +21,7 @@ const ScreenList = () => {
     else router.push('/login');
   };
 
-  if (isLoading) return null;
+  if (isLoading) return <Loading />;
   const { publicRooms, customRooms } = data;
   return (
     <StyledWrapper>
@@ -48,6 +50,7 @@ export default ScreenList;
 
 const StyledWrapper = styled.div`
   height: 100%;
+  animation: ${fadeIn} 500ms;
 
   .scroll-box {
     overflow-y: scroll;

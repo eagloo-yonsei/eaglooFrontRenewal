@@ -61,5 +61,9 @@ const StyledButton = styled.button`
     &:hover {
       opacity: ${disabled ? 1 : 0.7};
     }
+
+    &:disabled {
+      cursor: unset;
+    }
   `}
 `;
