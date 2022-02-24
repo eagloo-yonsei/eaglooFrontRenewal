@@ -1,4 +1,6 @@
 import create from 'zustand';
+import { parseCookies, setCookie } from 'nookies';
+import { useRouter } from 'next/router';
 
 export const useStoreRoomUsingInfo = create<any>((set) => ({
   roomUsingInfo: {
@@ -7,6 +9,30 @@ export const useStoreRoomUsingInfo = create<any>((set) => ({
     roomName: null,
     seatNo: null,
     endTime: null,
+    isLoading: true,
+  },
+
+  requestRoomUsingInfo: async () => {
+    const cookies = parseCookies();
+    const roomUsingInfo = cookies['_eagloo_room_info'];
+
+    if (roomUsingInfo) {
+      set((state) => {
+        return {
+          roomUsingInfo: {
+            ...JSON.parse(roomUsingInfo),
+          },
+        };
+      });
+    } else {
+      set((state) => {
+        return {
+          roomUsingInfo: {
+            ...JSON.parse(roomUsingInfo),
+          },
+        };
+      });
+    }
   },
 
   setRoomUsingInfo: async (roomUsingInfo): Promise<any> => {
@@ -22,5 +48,15 @@ export const useStoreRoomUsingInfo = create<any>((set) => ({
 }));
 
 export const useGetRoomUsingInfo = () => {
-  return useStoreRoomUsingInfo((state) => state.roomUsingInfo);
+  const router = useRouter();
+  const { roomType, roomId, roomName, seatNo, endTime } = router.query;
+
+  return {
+    roomType,
+    roomId,
+    roomName,
+    seatNo,
+    endTime,
+    isLoading: false,
+  };
 };
