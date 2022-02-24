@@ -6,25 +6,71 @@ import API from 'app.modules/api';
 import Button from 'app.components/Button/Button';
 import ProfileForm from 'app.feature/profile/component/ProfileForm';
 import ProfileModal from 'app.feature/profile/component/ProfileModal';
-import { toastErrorMessage } from 'app.modules/util/ToastMessage';
-import { useGetUser } from 'app.store/intoAPP/store.intoAPP';
+import {
+  toastErrorMessage,
+  toastSuccessMessage,
+} from 'app.modules/util/ToastMessage';
+import { useGetUser, useStoreIntoAPP } from 'app.store/intoAPP/store.intoAPP';
+import { API_USER_INFO } from 'app.modules/api/eagloo.profile';
+import SHA3 from 'sha3';
 
 const ScreenProfile = () => {
   const getUser = useGetUser();
   const methods = useForm();
   const { watch } = methods;
+  const updateAuthUser = useStoreIntoAPP((state) => state.updateAuthUser);
+
+  const hashedNewPassword = new SHA3(512);
+  const hashedPreviousPassword = new SHA3(512);
 
   const router = useRouter();
+  const [isUpdating, setIsUpdating] = useState(false);
   const [nicknameChangeConfirmed, setNicknameChangeConfirmed] =
-    useState<boolean>(getUser.info?.nickName ? true : false);
+    useState<boolean>(!!getUser.info?.nickName);
   const [nicknameConfirm, setNicknameConfirm] = useState(false);
   const [passwordConfirm, setPasswordConfirm] = useState(true);
   const [passwordLength, setPasswordLength] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
+  const [previousPassword, setPreviousPassword] = useState('');
 
   const handleProfileEdit = async (formData) => {
-    console.log(formData);
-    handleClose();
+    try {
+      setIsUpdating(true);
+      hashedNewPassword.reset();
+      hashedNewPassword.update(watch()?.password);
+      hashedPreviousPassword.reset();
+      hashedPreviousPassword.update(previousPassword);
+      console.log(formData);
+      const res = await API.PUT({
+        url: API_USER_INFO,
+        data: {
+          email: getUser?.info?.email,
+          nickName: watch()?.nickNameInput
+            ? watch()?.nickNameInput
+            : getUser?.info?.nickName,
+          newPassword: watch()?.password
+            ? hashedNewPassword.digest('hex')
+            : undefined,
+          previousPassword: hashedPreviousPassword.digest('hex'),
+        },
+      });
+      if (res.data.success) {
+        updateAuthUser({
+          nickName: watch()?.nickNameInput
+            ? watch()?.nickNameInput
+            : getUser?.info?.nickName,
+        });
+        toastSuccessMessage(res.data.message);
+      } else {
+        toastErrorMessage(res.data.message);
+      }
+    } catch (err) {
+      console.log(err);
+      toastErrorMessage('닉네임 중복 확인 중 오류가 발생했어요');
+    } finally {
+      handleClose();
+      setIsUpdating(false);
+    }
   };
 
   const handleClose = () => {
@@ -34,6 +80,9 @@ const ScreenProfile = () => {
   return (
     <StyledWrapper>
       <ProfileModal
+        previousPassword={previousPassword}
+        setPreviousPassword={setPreviousPassword}
+        passwordInput={watch()?.password}
         nicknameInput={watch()?.nickname}
         isVisible={isVisible}
         handleClose={handleClose}
@@ -51,6 +100,7 @@ const ScreenProfile = () => {
             setPasswordConfirm={setPasswordConfirm}
             passwordLength={passwordLength}
             setPasswordLength={setPasswordLength}
+            previousPassword={previousPassword}
           />
           <div className="profile-form-button">
             <Button
@@ -66,6 +116,7 @@ const ScreenProfile = () => {
               취소
             </Button>
             <Button
+              isLoading={isUpdating}
               className="submit-button"
               onClick={methods.handleSubmit(handleProfileEdit)}
             >
@@ -111,7 +162,7 @@ const StyledWrapper = styled.div`
       cursor: pointer;
       margin-right: 10px;
     }
-    
+
     .submit-button {
       cursor: pointer;
       display: flex;
@@ -124,7 +175,6 @@ const StyledWrapper = styled.div`
       font-family: JejuGothic;
       border-radius: 8px;
       background: var(--color-orange-gradient);
-    }
     }
   }
 `;

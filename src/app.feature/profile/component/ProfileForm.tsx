@@ -13,6 +13,7 @@ const ProfileForm = ({
   setPasswordConfirm,
   passwordLength,
   setPasswordLength,
+  previousPassword,
 }) => {
   const { handleSubmit, register, watch, getValues } = useFormContext();
   const [confirming, setConfirming] = useState(false);
@@ -110,11 +111,18 @@ const ProfileForm = ({
           </div>
           <div className="item-info-wrap">
             {!passwordConfirm && (
-              <div className="item-info warn">비밀번호가 일치하지 않습니다</div>
+              <div className="item-info warn">
+                비밀번호가 일치하지 않습니다.
+              </div>
             )}
             {!passwordLength && (
               <div className="item-info warn">
-                비밀번호는 8자리 이상이어야 합니다
+                비밀번호는 8자리 이상이어야 합니다.
+              </div>
+            )}
+            {watch()?.password === previousPassword && (
+              <div className="item-info warn">
+                이전 비밀번호와 다르게 설정해주세요.
               </div>
             )}
           </div>

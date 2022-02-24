@@ -9,6 +9,8 @@ const ProfileModal = ({
   nicknameConfirm,
   nicknameChangeConfirmed,
   setNicknameChangeConfirmed,
+  previousPassword,
+  setPreviousPassword,
 }) => {
   const [isUpdating, setIsUpdating] = useState(false);
 
@@ -41,14 +43,30 @@ const ProfileModal = ({
             <div className="confirm-body">
               {nicknameConfirm && (
                 <div className="info-wrap">
-                  <div className="info-title"></div>
-                  <div className="info-input"></div>
+                  <div className="info-title">닉네임</div>
+                  <div className="info-input">{nicknameInput}</div>
                 </div>
               )}
             </div>
           </div>
         ) : (
-          <div className="password-confirm-body"></div>
+          <div className="password-confirm-body">
+            <div className="confirm-header">비밀번호 확인</div>
+            <div className="confirm-body">
+              <input
+                className="password-box"
+                disabled={isUpdating}
+                type="password"
+                value={previousPassword}
+                placeholder="현재 비밀번호"
+                onChange={(e) => {
+                  if (e.target.value.length <= 30) {
+                    setPreviousPassword(e.target.value);
+                  }
+                }}
+              />
+            </div>
+          </div>
         )}
         <div className="confirm-footer">
           <div className="confirm-message">
@@ -93,6 +111,52 @@ const StyledModalWrapper = styled(Modal)`
       gap: 25px;
       width: 100%;
       height: fit-content;
+
+      .info-wrap {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 400px;
+        height: 50px;
+        gap: 25px;
+
+        .info-title {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 15%;
+          height: 100%;
+          font-size: 16px;
+          font-family: NexonGothicLv1Bold;
+        }
+
+        .info-input {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100%;
+          font-family: NexonGothicLv1Bold;
+          width: 50%;
+          font-size: 28px;
+        }
+      }
+
+      .password-box {
+        width: 400px;
+        height: 50px;
+        font-size: 15px;
+        text-align: center;
+        border: 2px solid gray;
+        border-radius: 8px;
+        padding: 0 12px;
+        :focus {
+          outline: none;
+        }
+        ::placeholder {
+          color: gray;
+          font-family: JejuGothic;
+        }
+      }
     }
 
     .confirm-footer {
