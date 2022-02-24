@@ -122,7 +122,7 @@ export default function RoomPostboardProvider({
   userInfo,
   roomUsingInfo,
   children,
-}: ChildrenProp) {
+}) {
   const [posts, setPosts] = useState<Post[]>([]);
   const [wholePosts, setWholePosts] = useState<Post[]>([]);
   const [postCreateOpened, setPostCreateOpened] = useState<boolean>(false);
