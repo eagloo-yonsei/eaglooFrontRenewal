@@ -12,7 +12,7 @@ const Page_SignUp = () => {
 
   useEffect(() => {
     if (!getUser?.isLoading && getUser?.login) router.push('/');
-  }, []);
+  }, [getUser?.isLoading, getUser?.login]);
 
   if (getUser?.isLoading || getUser?.login) return null;
   return (

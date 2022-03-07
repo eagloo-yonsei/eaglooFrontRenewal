@@ -103,7 +103,7 @@ export function StylelessLink({ to, children }: LinkProps) {
   const router = useRouter();
   return (
     <div
-      style={{ color: 'inherit', textDecoration: 'none' }}
+      style={{ color: 'inherit', textDecoration: 'none', cursor: 'pointer' }}
       onClick={() => {
         router.push(to);
       }}

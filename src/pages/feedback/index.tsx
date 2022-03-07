@@ -5,12 +5,22 @@ import ScreenFeedback from 'app.feature/feedback/screen/ScreenFeedback';
 import { useGetUser } from 'app.store/intoAPP/store.intoAPP';
 import ScreenFeedbackProvider from 'app.feature/feedback/screen/ScreenFeedbackProvider';
 import Loading from 'app.components/Loading/Loading';
+import ScreenAdminFeedbackProvider from '../../app.admin/feedback/screen/ScreenAdminFeedbackProvider';
+import ScreenAdminFeedback from '../../app.admin/feedback/screen/ScreenAdminFeedback';
 
 const Page_Feedback = () => {
   const getUser = useGetUser();
   const { isLoading, info: userInfo } = getUser;
 
   if (isLoading) return <Loading />;
+  if (userInfo.isAdmin)
+    return (
+      <>
+        <ScreenAdminFeedbackProvider>
+          <ScreenAdminFeedback />
+        </ScreenAdminFeedbackProvider>
+      </>
+    );
   return (
     <StyledWrapper>
       <ScreenFeedbackProvider userInfo={userInfo}>
