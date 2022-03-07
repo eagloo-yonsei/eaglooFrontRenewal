@@ -16,8 +16,17 @@ const Page_Room = () => {
     if (!getUser?.login) router.push('/login');
   }, [getUser?.isLoading, getUser?.login]);
 
-  if (getUser?.isLoading || roomUsingInfo?.isLoading || !getUser?.login)
+  if (
+    getUser?.isLoading ||
+    roomUsingInfo?.isLoading ||
+    !roomUsingInfo?.roomId ||
+    !getUser?.login
+  )
     return <Loading />;
+  return <Room getUser={getUser} roomUsingInfo={roomUsingInfo} />;
+};
+
+const Room = ({ getUser, roomUsingInfo }) => {
   return (
     <StyledWrapper>
       <ScreenRoomProvider
@@ -34,7 +43,6 @@ const Page_Room = () => {
     </StyledWrapper>
   );
 };
-
 export default Page_Room;
 
 const StyledWrapper = styled.div`

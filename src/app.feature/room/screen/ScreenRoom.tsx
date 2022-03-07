@@ -1,21 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
-import RoomHeader from 'app.feature/room/component/RoomHeader';
-import RoomSeats from 'app.feature/room/component/RoomSeats/RoomSeats';
-import RoomChatting from 'app.feature/room/component/RoomChatting/Room__Chatting';
-import RoomChattingOpenButton from 'app.feature/room/component/RoomChatting/Room__Chatting__OpenButton';
+import RoomHeader from 'app.feature/room/component/Room__Header';
+import Room14Seats from 'app.feature/room/component/Room__14Seats';
+import RoomChatting from 'app.feature/room/component/Room__Chatting';
 
 const ScreenRoom = ({ roomUsingInfo, userInfo, socketRef }) => {
   return (
     <StyledWrapper>
-      <RoomHeader roomUsingInfo={roomUsingInfo} />
-      <RoomSeats roomUsingInfo={roomUsingInfo} userInfo={userInfo} />
-      <RoomChatting
-        roomUsingInfo={roomUsingInfo}
-        userInfo={userInfo}
-        socketRef={socketRef}
-      />
-      <RoomChattingOpenButton />
+      <RoomHeader />
+      <Room14Seats />
     </StyledWrapper>
   );
 };

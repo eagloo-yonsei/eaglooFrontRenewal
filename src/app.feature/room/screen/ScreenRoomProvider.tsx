@@ -83,7 +83,6 @@ export default function ScreenRoomProvider({
 
   const router = useRouter();
 
-  // const { setRoomUsingInfo } = useAppContext();
   const quitForRest = useRef<boolean>(false);
   const userStreamHTMLRef = useRef<HTMLVideoElement>(null);
   const peersRef = useRef<PeerRefProp[]>([]);
@@ -100,14 +99,14 @@ export default function ScreenRoomProvider({
 
   useEffect(() => {
     // 방 입장시 roomUsingInfo가 없다면 /list로 push
-    if (!roomUsingInfo) {
+    if (!roomUsingInfo.roomId) {
       console.log('roomUsingInfo null');
       router.push('/list');
     }
 
     getRoomInfo(roomUsingInfo!.roomType, roomUsingInfo!.roomId);
 
-    if (userStreamHTMLRef?.current?.srcObject) {
+    if (userStreamHTMLRef?.current) {
       navigator.mediaDevices
         .getUserMedia({
           video: { width: { max: 640 }, height: { max: 480 } },
@@ -120,7 +119,7 @@ export default function ScreenRoomProvider({
           userStreamHTMLRef!.current!.srcObject = stream;
 
           /* 1. 방 입장 요청 */
-          socketRef?.current?.emit(SocketChannel.JOIN_ROOM, {
+          socketRef?.emit(SocketChannel.JOIN_ROOM, {
             roomType: roomUsingInfo?.roomType,
             roomId: roomUsingInfo?.roomId,
             newSeat: {
@@ -136,7 +135,7 @@ export default function ScreenRoomProvider({
             },
           });
 
-          socketRef?.current?.on(
+          socketRef?.on(
             SocketChannel.GET_CURRENT_ROOM,
             (currentRoom: Room | CustomRoom) => {
               // console.log(`기존 방 정보 수신 :`);
@@ -149,7 +148,7 @@ export default function ScreenRoomProvider({
                   if (seat.streamState.video) {
                     // 기존 참여자가 휴게실에 가있는 상황이 아니라면
                     // peer connection 만들어서 추가
-                    if (seat.socketId !== socketRef?.current?.id) {
+                    if (seat.socketId !== socketRef?.id) {
                       const peer = createPeer(seat.socketId, stream);
                       peersRef?.current?.push({
                         peer,
@@ -174,7 +173,7 @@ export default function ScreenRoomProvider({
           );
 
           /* 4. 새 유저 접속, 혹은 기존 유저가 휴게실에서 돌아온 경우 */
-          socketRef?.current?.on(
+          socketRef?.on(
             SocketChannel.PEER_CONNECTION_REQUESTED,
             (payload: { signal: Peer.SignalData; callerSeatInfo: Seat }) => {
               // console.log(
@@ -212,7 +211,7 @@ export default function ScreenRoomProvider({
           );
 
           /* 6. 최종 연결 */
-          socketRef?.current?.on(
+          socketRef?.on(
             SocketChannel.PEER_CONNECTION_REQUEST_ACCEPTED,
             (payload) => {
               // console.log(`${payload.id}가 연결 요청을 수락`);
@@ -224,36 +223,33 @@ export default function ScreenRoomProvider({
           );
 
           /* 다른 유저 휴게실 입장시 */
-          socketRef?.current?.on(
-            SocketChannel.PEER_ENTER_LOUNGE,
-            (seatNo: number) => {
-              // console.log(`${seatNo}번 참여자 휴게실 입장`);
-              const exitPeer = peersRef?.current?.find((peer) => {
-                peer.seatInfo.seatNo === seatNo;
-              });
-              if (!!exitPeer) {
-                exitPeer.peer?.destroy();
-              }
-
-              // DUPLICATE
-              peersRef.current = peersRef?.current?.filter((peerRef) => {
-                return peerRef.seatInfo.seatNo !== seatNo;
-              });
-              setPeersState(peersRef.current);
-
-              addRestingPeer(seatNo);
-              // restingPeerRef.current.push(seatNo);
-              // console.log(
-              //     `restingPeerRef : `,
-              //     restingPeerRef.current
-              // );
-              // setRestingPeersSeatNo(restingPeerRef.current);
-              // console.log(`restingPeerState : `, restingPeersSeatNo);
+          socketRef?.on(SocketChannel.PEER_ENTER_LOUNGE, (seatNo: number) => {
+            // console.log(`${seatNo}번 참여자 휴게실 입장`);
+            const exitPeer = peersRef?.current?.find((peer) => {
+              peer.seatInfo.seatNo === seatNo;
+            });
+            if (!!exitPeer) {
+              exitPeer.peer?.destroy();
             }
-          );
+
+            // DUPLICATE
+            peersRef.current = peersRef?.current?.filter((peerRef) => {
+              return peerRef.seatInfo.seatNo !== seatNo;
+            });
+            setPeersState(peersRef.current);
+
+            addRestingPeer(seatNo);
+            // restingPeerRef.current.push(seatNo);
+            // console.log(
+            //     `restingPeerRef : `,
+            //     restingPeerRef.current
+            // );
+            // setRestingPeersSeatNo(restingPeerRef.current);
+            // console.log(`restingPeerState : `, restingPeersSeatNo);
+          });
 
           /* 다른 유저 퇴장시 */
-          socketRef?.current?.on(SocketChannel.PEER_QUIT_ROOM, (seatNo) => {
+          socketRef?.on(SocketChannel.PEER_QUIT_ROOM, (seatNo) => {
             // console.log(`${seatNo}번 참여자 퇴장`);
             const exitPeer = peersRef?.current?.find((peer) => {
               peer.seatInfo.seatNo === seatNo;
@@ -278,7 +274,7 @@ export default function ScreenRoomProvider({
           });
 
           /* 방장, 혹은 관리자에 의해 퇴출 */
-          socketRef?.current?.on(SocketChannel.EXILED, (message: string) => {
+          socketRef?.on(SocketChannel.EXILED, (message: string) => {
             toastErrorMessage(message);
             stopSelfStream();
             exitToList();
@@ -301,26 +297,26 @@ export default function ScreenRoomProvider({
         stopSelfStream();
         clearTimeout(timeOver);
         if (quitForRest.current) {
-          socketRef?.current?.emit(SocketChannel.ENTER_LOUNGE, {
+          socketRef?.emit(SocketChannel.ENTER_LOUNGE, {
             roomId: roomUsingInfo?.roomId,
             seatNo: roomUsingInfo?.seatNo,
           });
         } else {
-          socketRef?.current?.emit(SocketChannel.QUIT_ROOM, {
+          socketRef?.emit(SocketChannel.QUIT_ROOM, {
             roomId: roomUsingInfo?.roomId,
             seatNo: roomUsingInfo?.seatNo,
           });
           // setRoomUsingInfo(undefined);
         }
-        socketRef?.current?.off(SocketChannel.GET_CURRENT_ROOM);
-        socketRef?.current?.off(SocketChannel.PEER_CONNECTION_REQUESTED);
-        socketRef?.current?.off(SocketChannel.PEER_CONNECTION_REQUEST_ACCEPTED);
-        socketRef?.current?.off(SocketChannel.PEER_ENTER_LOUNGE);
-        socketRef?.current?.off(SocketChannel.PEER_QUIT_ROOM);
-        socketRef?.current?.off(SocketChannel.EXILED);
+        socketRef?.off(SocketChannel.GET_CURRENT_ROOM);
+        socketRef?.off(SocketChannel.PEER_CONNECTION_REQUESTED);
+        socketRef?.off(SocketChannel.PEER_CONNECTION_REQUEST_ACCEPTED);
+        socketRef?.off(SocketChannel.PEER_ENTER_LOUNGE);
+        socketRef?.off(SocketChannel.PEER_QUIT_ROOM);
+        socketRef?.off(SocketChannel.EXILED);
       };
     }
-  }, [userStreamHTMLRef]);
+  }, [userStreamHTMLRef?.current]);
 
   async function getRoomInfo(roomType: RoomType, roomId: string) {
     await axios
@@ -357,12 +353,12 @@ export default function ScreenRoomProvider({
     peer.on('signal', (signal: Peer.SignalData) => {
       /* 3. 기존 사용자에게 연결 요청 */
       // console.log(`${userToSignal}에게 연결 요청`);
-      socketRef?.current?.emit(SocketChannel.REQUEST_PEER_CONNECTION, {
+      socketRef?.emit(SocketChannel.REQUEST_PEER_CONNECTION, {
         userToSignal,
         signal,
         callerSeatInfo: {
           seatNo: roomUsingInfo!.seatNo,
-          socketId: socketRef?.current?.id,
+          socketId: socketRef?.id,
           userEmail: userInfo?.email,
           userNickName: userInfo?.nickName,
           endTime: roomUsingInfo!.endTime,
@@ -390,7 +386,7 @@ export default function ScreenRoomProvider({
     /* 5. 연결 요청 수락 */
     peer.on('signal', (signal: Peer.SignalData) => {
       // console.log(`${callerId}의 연결 요청 수락`);
-      socketRef?.current?.emit(SocketChannel.ACCEPT_PEER_CONNECTION_REQUEST, {
+      socketRef?.emit(SocketChannel.ACCEPT_PEER_CONNECTION_REQUEST, {
         signal,
         callerId,
       });
@@ -422,7 +418,7 @@ export default function ScreenRoomProvider({
   }
 
   function handleSelfAudio(status: boolean) {
-    socketRef?.current?.emit(
+    socketRef?.emit(
       status ? SocketChannel.RESUME_AUDIO : SocketChannel.HALT_AUDIO,
       {
         roomId: roomUsingInfo!.roomId,

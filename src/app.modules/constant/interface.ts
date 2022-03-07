@@ -19,6 +19,20 @@ export interface Room {
   seats: Seat[];
 }
 
+export interface PreviewPost {
+  id: string;
+  category: string;
+  title: string;
+  contents: string;
+  authorId: string;
+  roomId: string;
+  postlikes: PostLike[];
+  postScraps: PostScrap[];
+  postComments: PostComment[];
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface CustomRoom {
   id: string;
   roomName: string;
