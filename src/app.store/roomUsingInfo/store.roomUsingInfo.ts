@@ -36,11 +36,12 @@ export const useStoreRoomUsingInfo = create<any>((set) => ({
   },
 
   setRoomUsingInfo: async (roomUsingInfo): Promise<any> => {
-    set((state) => {
+    await set((state) => {
       return {
         roomUsingInfo: {
           ...state.roomUsingInfo,
           ...roomUsingInfo,
+          isLoading: false,
         },
       };
     });
@@ -48,15 +49,5 @@ export const useStoreRoomUsingInfo = create<any>((set) => ({
 }));
 
 export const useGetRoomUsingInfo = () => {
-  const router = useRouter();
-  const { roomType, roomId, roomName, seatNo, endTime } = router.query;
-
-  return {
-    roomType,
-    roomId,
-    roomName,
-    seatNo,
-    endTime,
-    isLoading: false,
-  };
+  return useStoreRoomUsingInfo((state) => state.roomUsingInfo);
 };
