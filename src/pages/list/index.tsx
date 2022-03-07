@@ -2,8 +2,16 @@ import React from 'react';
 import styled from 'styled-components';
 import ScreenList from 'app.feature/list/screen/ScreenList';
 import { fadeIn } from 'app.styled/keyframe';
+import { useGetUser } from 'app.store/intoAPP/store.intoAPP';
+import { useRouter } from 'next/router';
+import Loading from 'app.components/Loading/Loading';
 
 const Page_List = () => {
+  const { isLoading, info: userInfo } = useGetUser();
+  const router = useRouter();
+
+  if (isLoading) return <Loading />;
+  if (userInfo?.isAdmin) router.push('/');
   return (
     <StyledWrapper>
       <ScreenList />

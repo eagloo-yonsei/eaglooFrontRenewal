@@ -6,6 +6,8 @@ import { useGetRoomUsingInfo } from 'app.store/roomUsingInfo/store.roomUsingInfo
 import ScreenRoomProvider from 'app.feature/room/screen/ScreenRoomProvider';
 import ScreenRoom from 'app.feature/room/screen/ScreenRoom';
 import { useRouter } from 'next/router';
+import ScreenAdminRoom from '../../app.admin/room/screen/ScreenAdminRoom';
+import ScreenAdminRoomProvider from '../../app.admin/room/screen/ScreenAdminRoomProvider';
 
 const Page_Room = () => {
   const router = useRouter();
@@ -13,8 +15,17 @@ const Page_Room = () => {
   const roomUsingInfo = useGetRoomUsingInfo();
 
   useEffect(() => {
-    if (!getUser?.login) router.push('/login');
+    if (!getUser?.isLoading && !getUser?.login) router.push('/login');
   }, [getUser?.isLoading, getUser?.login]);
+
+  if (getUser?.info?.isAdmin)
+    return (
+      <>
+        <ScreenAdminRoomProvider>
+          <ScreenAdminRoom />
+        </ScreenAdminRoomProvider>
+      </>
+    );
 
   if (
     getUser?.isLoading ||
@@ -34,11 +45,7 @@ const Room = ({ getUser, roomUsingInfo }) => {
         userInfo={getUser?.info}
         socketRef={getUser?.socket}
       >
-        <ScreenRoom
-          roomUsingInfo={roomUsingInfo}
-          userInfo={getUser?.info}
-          socketRef={getUser?.socket}
-        />
+        <ScreenRoom />
       </ScreenRoomProvider>
     </StyledWrapper>
   );

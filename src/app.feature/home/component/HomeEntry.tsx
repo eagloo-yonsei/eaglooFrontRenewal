@@ -1,10 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
+import CustomRoomModal from 'app.components/CustomRoomModal';
 
 const HomeEntry = () => {
+  const [showCustomRoomModal, setShowCustomRoomModal] = useState(false);
+
   return (
     <StyledWrapper>
+      <CustomRoomModal
+        showCustomRoomModal={showCustomRoomModal}
+        setShowCustomRoomModal={setShowCustomRoomModal}
+      />
       <div className="room-entry-wrap open">
         <div className="room-title">오픈 스터디룸</div>
         <div className="room-desc">
@@ -21,7 +28,12 @@ const HomeEntry = () => {
           사용자 설정 스터디룸을 검색하거나, 직접 생성할 수도 있습니다! 같은
           목표를 가진 사람들과 함께 공부해 보세요!
         </div>
-        <div className="entry-button">만들기/찾기</div>
+        <div
+          className="entry-button"
+          onClick={() => setShowCustomRoomModal(true)}
+        >
+          만들기/찾기
+        </div>
       </div>
     </StyledWrapper>
   );

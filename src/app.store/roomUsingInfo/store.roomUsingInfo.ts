@@ -35,7 +35,30 @@ export const useStoreRoomUsingInfo = create<any>((set) => ({
     }
   },
 
+  removeRoomUsingInfo: async (): Promise<any> => {
+    sessionStorage.removeItem('_eagloo_roomUsingInfo');
+    await set((state) => {
+      return {
+        roomUsingInfo: {
+          roomType: null,
+          roomId: null,
+          roomName: null,
+          seatNo: null,
+          endTime: null,
+          isLoading: false,
+        },
+      };
+    });
+  },
+
   setRoomUsingInfo: async (roomUsingInfo): Promise<any> => {
+    sessionStorage.setItem(
+      '_eagloo_roomUsingInfo',
+      JSON.stringify({
+        ...roomUsingInfo,
+        isLoading: false,
+      })
+    );
     await set((state) => {
       return {
         roomUsingInfo: {
@@ -49,5 +72,9 @@ export const useStoreRoomUsingInfo = create<any>((set) => ({
 }));
 
 export const useGetRoomUsingInfo = () => {
+  const roomUsingInfo = JSON.parse(
+    sessionStorage.getItem('_eagloo_roomUsingInfo')
+  );
+  if (roomUsingInfo) return roomUsingInfo;
   return useStoreRoomUsingInfo((state) => state.roomUsingInfo);
 };

@@ -33,8 +33,6 @@ const App = ({ componentContent }) => {
 
   if (isLoading) return null;
   if (info?.isAdmin) return <AdminLayout componentContent={componentContent} />;
-  if (router.pathname.includes('room') && !router.pathname.includes('entry'))
-    return <>{componentContent}</>;
   return <AppLayout componentContent={componentContent} />;
 };
 

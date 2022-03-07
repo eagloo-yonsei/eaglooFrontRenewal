@@ -9,7 +9,6 @@ import { fadeIn, fadeOut } from 'app.styled/keyframe';
 
 const AppHeader = () => {
   const getUser = useGetUser();
-
   const router = useRouter();
   if (router.pathname === '/login' || router.pathname === '/signup')
     return null;

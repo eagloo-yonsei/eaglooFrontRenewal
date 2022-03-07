@@ -23,6 +23,7 @@ import {
   toastSuccessMessage,
 } from 'app.modules/util/ToastMessage';
 import { useRouter } from 'next/router';
+import { useStoreRoomUsingInfo } from 'app.store/roomUsingInfo/store.roomUsingInfo';
 
 interface RoomContextProp {
   userStreamHTMLRef?: RefObject<HTMLVideoElement>;
@@ -83,6 +84,9 @@ export default function ScreenRoomProvider({
 
   const router = useRouter();
 
+  const removeRoomUsingInfo = useStoreRoomUsingInfo(
+    (state) => state.removeRoomUsingInfo
+  );
   const quitForRest = useRef<boolean>(false);
   const userStreamHTMLRef = useRef<HTMLVideoElement>(null);
   const peersRef = useRef<PeerRefProp[]>([]);
@@ -306,8 +310,8 @@ export default function ScreenRoomProvider({
             roomId: roomUsingInfo?.roomId,
             seatNo: roomUsingInfo?.seatNo,
           });
-          // setRoomUsingInfo(undefined);
         }
+
         socketRef?.off(SocketChannel.GET_CURRENT_ROOM);
         socketRef?.off(SocketChannel.PEER_CONNECTION_REQUESTED);
         socketRef?.off(SocketChannel.PEER_CONNECTION_REQUEST_ACCEPTED);
@@ -449,6 +453,7 @@ export default function ScreenRoomProvider({
   }
 
   function exitToList() {
+    removeRoomUsingInfo();
     router.push('/list');
   }
 

@@ -1,24 +1,22 @@
 import React from 'react';
 import styled from 'styled-components';
-import useQueryFn from 'app.hooks/useQueryFn';
 import ScreenEntry from 'app.feature/entry/screen/ScreenEntry';
-import { CustomRoom, Room } from 'app.modules/constant/interface';
-import { API_ROOM_INFO } from 'app.modules/api/eagloo.entry';
 import { fadeIn } from 'app.styled/keyframe';
 import ScreenEntryProvider from 'app.feature/entry/screen/ScreenEntryProvider';
+import { useGetUser } from 'app.store/intoAPP/store.intoAPP';
+import { useRouter } from 'next/router';
+import Loading from 'app.components/Loading/Loading';
 
-const Page_Entry = ({ roomType, roomId }) => {
-  const {
-    isLoading,
-    isError,
-    data: roomInfo,
-  } = useQueryFn<Room | CustomRoom>(API_ROOM_INFO(roomId));
+const Page_Entry = () => {
+  const { isLoading, info: userInfo } = useGetUser();
+  const router = useRouter();
 
-  if (isLoading || isError) return null;
-  return <Entry roomType={roomType} roomId={roomId} roomInfo={roomInfo} />;
+  if (isLoading) return <Loading />;
+  if (userInfo?.isAdmin) router.push('/');
+  return <Entry />;
 };
 
-const Entry = ({ roomType, roomId, roomInfo }) => {
+const Entry = () => {
   return (
     <StyledWrapper>
       <ScreenEntryProvider>
@@ -29,10 +27,6 @@ const Entry = ({ roomType, roomId, roomInfo }) => {
 };
 
 export default Page_Entry;
-
-Page_Entry.getInitialProps = async (ctx) => {
-  return { roomType: ctx.query.roomType, roomId: ctx.query.roomId };
-};
 
 const StyledWrapper = styled.div`
   margin: 0 auto;
