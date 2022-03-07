@@ -3,12 +3,15 @@ import styled from 'styled-components';
 import RoomHeader from 'app.feature/room/component/Room__Header';
 import Room14Seats from 'app.feature/room/component/Room__14Seats';
 import RoomChatting from 'app.feature/room/component/Room__Chatting';
+import RoomChattingOpenButton from 'app.feature/room/component/Room__Chatting/Room__Chatting__OpenButton';
 
-const ScreenRoom = ({ roomUsingInfo, userInfo, socketRef }) => {
+const ScreenRoom = () => {
   return (
     <StyledWrapper>
       <RoomHeader />
       <Room14Seats />
+      <RoomChatting />
+      <RoomChattingOpenButton />
     </StyledWrapper>
   );
 };
@@ -16,7 +19,7 @@ const ScreenRoom = ({ roomUsingInfo, userInfo, socketRef }) => {
 export default ScreenRoom;
 
 const StyledWrapper = styled.div`
-  width: 100%;
+  overflow: hidden;
   height: 100%;
   position: relative;
   display: flex;

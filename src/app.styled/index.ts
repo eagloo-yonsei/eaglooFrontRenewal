@@ -47,10 +47,7 @@ export const GlobalStyle = createGlobalStyle`
   }
   
   html, body, #__next {
-    width: 100vw;
-    min-width: 1024px;
     height: 100vh;
     min-height: 768px;
-    background: var(--color-blue-gradient);
   }
 `;

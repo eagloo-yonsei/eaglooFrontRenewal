@@ -34,11 +34,7 @@ const Room = ({ getUser, roomUsingInfo }) => {
         userInfo={getUser?.info}
         socketRef={getUser?.socket}
       >
-        <ScreenRoom
-          roomUsingInfo={roomUsingInfo}
-          userInfo={getUser?.info}
-          socketRef={getUser?.socket}
-        />
+        <ScreenRoom />
       </ScreenRoomProvider>
     </StyledWrapper>
   );
