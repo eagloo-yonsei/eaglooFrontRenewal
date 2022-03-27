@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-class Board extends React.Component {
+class Board extends React.Component<any> {
   constructor(props) {
     super(props);
   }
