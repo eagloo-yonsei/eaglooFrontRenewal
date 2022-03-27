@@ -112,7 +112,7 @@ export default function ScreenRoomProvider({
 
     if (userStreamHTMLRef?.current) {
       navigator.mediaDevices
-        .getUserMedia({
+        .getDisplayMedia({
           video: { width: { max: 640 }, height: { max: 480 } },
           audio: true,
         })
