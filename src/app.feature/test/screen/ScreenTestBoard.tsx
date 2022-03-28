@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Board from 'app.feature/test/component/Board';
 
 const ScreenTestBoard = () => {
-  const [color, setColor] = useState('black');
+  const [color, setColor] = useState('#000000');
   const [size, setSize] = useState(5);
+
   const handleColor = (event) => {
     setColor(event.target.value);
   };
@@ -12,6 +13,7 @@ const ScreenTestBoard = () => {
   const handleSize = (event) => {
     setSize(event.target.value);
   };
+
   return (
     <StyledWrapper>
       <div className="color-picker">

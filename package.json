@@ -36,6 +36,8 @@
     "react-hook-form": "^7.20.4",
     "react-query": "3.33.4",
     "react-reset": "0.0.0",
+    "react-sketch": "0.5.1",
+    "react-sketch-canvas": "6.1.5",
     "react-toastify": "^7.0.4",
     "sha3": "^2.1.4",
     "simple-peer": "^9.11.1",
