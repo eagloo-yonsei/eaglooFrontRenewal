@@ -28,21 +28,27 @@ const ScreenTestBoard = () => {
   return (
     <StyledWrapper>
       <div className="brush-picker">
-        <span>브러쉬 설정</span>
+        <label htmlFor="brush-size">브러쉬 설정 {size}/100</label>
+        <input
+          id="brush-size"
+          value={size}
+          type="range"
+          min={1}
+          max={100}
+          onChange={handleSize}
+        />
         <input type="color" value={color} onChange={handleColor} />
-        <select value={size} onChange={handleSize}>
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, key) => (
-            <option key={key}>{item}</option>
-          ))}
-        </select>
       </div>
       <div className="eraser-picker">
-        <span>지우개 설정</span>
-        <select value={eraserSize} onChange={handleEraserSize}>
-          {[5, 10, 15, 20, 25, 30, 35].map((item, key) => (
-            <option key={key}>{item}</option>
-          ))}
-        </select>
+        <label htmlFor="eraser-size">지우개 설정 {eraserSize}/1000</label>
+        <input
+          id="eraser-size"
+          value={eraserSize}
+          type="range"
+          min={1}
+          max={1000}
+          onChange={handleEraserSize}
+        />
         <button onClick={handleEraseMode}>
           {eraseMode ? '그리기' : '지우개'}
         </button>
@@ -64,13 +70,13 @@ const StyledWrapper = styled.div`
   width: 100%;
 
   .brush-picker {
-    span {
+    label {
       color: white;
     }
   }
 
   .eraser-picker {
-    span {
+    label {
       color: white;
     }
   }
