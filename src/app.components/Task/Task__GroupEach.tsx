@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Task } from 'app.modules/constant/interface';
 
-export default function TaskEach({ task }: { task: Task }) {
+export default function TaskGroupEach({ task }: { task: Task }) {
   const { updateTask, deleteTask } = useTaskContext();
   const [taskDone, setTaskDone] = useState<boolean>(task.done);
   const [previousTaskContent, setPreviousTaskContent] = useState<string>(
@@ -82,29 +82,7 @@ export default function TaskEach({ task }: { task: Task }) {
           }}
         />
       </ContainerLeft>
-      {previousTaskContent === taskContentInput ? (
-        <ContainerRight>
-          {!taskDone && <TaskDDay>D-Day</TaskDDay>}
-          {!taskDone && (
-            <TaskImportance
-              id={task.id}
-              importance={taskImportance}
-              importanceSettingFunc={updateImportance}
-            />
-          )}
-          <RemoveIcon>
-            <FontAwesomeIcon
-              icon={faTrash}
-              onClick={() => {
-                if (updating) {
-                  return;
-                }
-                deleteTask(task.id);
-              }}
-            />
-          </RemoveIcon>
-        </ContainerRight>
-      ) : (
+      {previousTaskContent !== taskContentInput && (
         <ContainerRight>
           <ConfirmButton
             onClick={async () => {
@@ -156,6 +134,10 @@ const Container = styled.div`
   width: 100%;
   margin-bottom: 18px;
 
+  &:last-child {
+    margin-bottom: 9px;
+  }
+
   &:hover {
     ${RemoveIcon} {
       opacity: 1;
@@ -182,12 +164,13 @@ const CheckBox = styled.div<{ taskDone: boolean }>`
   align-items: center;
   justify-content: center;
   margin-right: 12px;
+  margin-left: 15px;
   border-radius: 5px;
-  border: solid 2px #b3d0ff;
+  border: solid 2px #ffa28d;
   border: 2px solid
-    ${(props) => (props.taskDone ? '#1d74ff' : props.theme.taskLightBlue)};
+    ${(props) => (props.taskDone ? '#ffa28d' : 'props.theme.taskLightBlue')};
   color: white;
-  background-color: ${(props) => props.taskDone && '#1d74ff'};
+  background-color: ${(props) => props.taskDone && '#ffa28d'};
   cursor: pointer;
 
   svg {
