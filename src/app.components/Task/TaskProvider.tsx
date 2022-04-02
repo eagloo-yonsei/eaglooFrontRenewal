@@ -35,6 +35,8 @@ interface TaskContextProp {
   ) => Promise<boolean>;
   deleteTask: (id: string) => void;
   newTaskInputRef?: RefObject<HTMLInputElement>;
+  taskModalOpen: boolean;
+  handleTaskModalOpen: () => void;
 }
 
 const InitialTaskContext: TaskContextProp = {
@@ -58,12 +60,15 @@ const InitialTaskContext: TaskContextProp = {
     return new Promise(() => false);
   },
   deleteTask: () => {},
+  taskModalOpen: false,
+  handleTaskModalOpen: () => {},
 };
 
 const TaskContext = createContext<TaskContextProp>(InitialTaskContext);
 export const useTaskContext = () => useContext(TaskContext);
 
 export default function TaskProvider({ userInfo, children }) {
+  const [taskModalOpen, setTaskModalOpen] = useState<boolean>(false);
   const [taskOpen, setTaskOpen] = useState<boolean>(true);
   const [taskSorted, setTaskSorted] = useState<boolean>(false);
   const [sortedByImportanceAscending, setSortedByImportanceAscending] =
@@ -83,6 +88,10 @@ export default function TaskProvider({ userInfo, children }) {
     loadTask();
     return () => {};
   }, [userInfo]);
+
+  function handleTaskModalOpen() {
+    setTaskModalOpen(!taskModalOpen);
+  }
 
   function toggleTaskOpen() {
     setTaskOpen(!taskOpen);
@@ -239,6 +248,8 @@ export default function TaskProvider({ userInfo, children }) {
     updateTask,
     deleteTask,
     newTaskInputRef,
+    taskModalOpen,
+    handleTaskModalOpen,
   };
 
   return (

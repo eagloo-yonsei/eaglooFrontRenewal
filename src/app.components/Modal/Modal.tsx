@@ -1,9 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
 import Portal from '../Portal/Portal';
-// import SVGClose from '../../../public/svg/close-black.svg';
 import { fadeIn, fadeOut } from 'app.styled/keyframe';
 import Button from 'app.components/Button/Button';
+import {
+  faCaretUp,
+  faFax,
+  faRemoveFormat,
+  faTimes,
+  faWindowClose,
+  faXRay,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 type TProps = {
   id?: string;
@@ -79,11 +87,11 @@ const Modal: React.FC<TProps> = ({
 
         <ModalWrapper ref={ref} className="modal-wrapper" tabIndex="-1">
           <ModalBody tabIndex="0" style={modalStyle} className="modal-body">
-            {/*{closable && (*/}
-            {/*  <div className="modal-close" onClick={handleClose}>*/}
-            {/*    <SVGClose />*/}
-            {/*  </div>*/}
-            {/*)}*/}
+            {closable && (
+              <div className="modal-close" onClick={handleClose}>
+                <FontAwesomeIcon icon={faTimes} />
+              </div>
+            )}
 
             <div className="modal-content">
               {children}
@@ -182,21 +190,19 @@ const ModalBody = styled.div`
       width: 100%;
     }
 
-    // .modal-close {
-    //   cursor: pointer;
-    //   position: absolute;
-    //   top: 20px;
-    //   right: 20px;
-    //   z-index: 2;
-    //
-    //   svg {
-    //     .close-path {
-    //       fill: ${darkMode ? '#626364' : '#aaaaaa'};
-    //     }
-    //
-    //     width: 30px;
-    //     height: 30px;
-    //   }
-    // }
+    .modal-close {
+      cursor: pointer;
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 2;
+
+      color: #3563d8;
+
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+    }
   `}
 `;

@@ -7,12 +7,13 @@ import TaskBody from './Task__Body';
 import TaskInput from './Task__Input';
 import { useTaskContext } from './TaskProvider';
 import TaskContent from 'app.components/Task/Task__Content';
-import TaskGroup from 'app.components/Task/Task__Group';
+import TaskModal from 'app.components/Task/Task__Modal';
 
 export default function TaskContainer() {
-  const { taskOpen } = useTaskContext();
+  const { taskOpen, taskModalOpen, handleTaskModalOpen } = useTaskContext();
   return (
     <>
+      <TaskModal open={taskModalOpen} onClose={handleTaskModalOpen} />
       <TaskOuterContainer taskOpen={taskOpen}>
         <TaskInnerContainer>
           <TaskWeek />

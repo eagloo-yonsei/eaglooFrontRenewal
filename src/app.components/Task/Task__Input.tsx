@@ -26,12 +26,17 @@ export default function TaskInput() {
     setNewTaskDday,
     createTask,
     newTaskInputRef,
+    handleTaskModalOpen,
   } = useTaskContext();
 
   if (isLoading) return null;
   return (
     <Container>
-      <FontAwesomeIcon className="more-icon" icon={faEllipsisV} />
+      <FontAwesomeIcon
+        className="more-icon"
+        icon={faEllipsisV}
+        onClick={handleTaskModalOpen}
+      />
       <NewTaskInput
         ref={newTaskInputRef}
         disabled={
