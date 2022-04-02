@@ -89,6 +89,8 @@ export default function TaskProvider({ userInfo, children }) {
     return () => {};
   }, [userInfo]);
 
+  useEffect(() => {});
+
   function handleTaskModalOpen() {
     setTaskModalOpen(!taskModalOpen);
   }
@@ -149,6 +151,7 @@ export default function TaskProvider({ userInfo, children }) {
         };
       });
     if (response.data.success) {
+      loadTask();
       return true;
     } else {
       toastErrorMessage(response.data.message);

@@ -1,7 +1,6 @@
 import React, { forwardRef } from 'react';
 import styled from 'styled-components';
 import { useTaskContext } from './TaskProvider';
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import TaskImportance from './Task__Importance';
 import { useGetUser } from 'app.store/intoAPP/store.intoAPP';
