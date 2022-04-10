@@ -68,6 +68,9 @@ export default function LoginContainer() {
           <UtilButton>
             <StylelessLink to={`/signup`}>{`회원가입`}</StylelessLink>
           </UtilButton>
+          <UtilButton>
+            <StylelessLink to={`/find`}>{`아이디/비밀번호 찾기`}</StylelessLink>
+          </UtilButton>
         </UtilButtonsContainer>
       </InnerContainer>
     </Container>
@@ -135,4 +138,9 @@ const UtilButton = styled.div`
   color: ${(props) => props.theme.entryLightBlue};
   font-size: 16px;
   font-family: 'JejuGothic';
+  margin-right: 60px;
+
+  &:last-child {
+    margin-right: 0;
+  }
 `;

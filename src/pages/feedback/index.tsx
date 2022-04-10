@@ -10,10 +10,10 @@ import ScreenAdminFeedback from '../../app.admin/feedback/screen/ScreenAdminFeed
 
 const Page_Feedback = () => {
   const getUser = useGetUser();
-  const { isLoading, info: userInfo } = getUser;
+  const { isLoading, login, info: userInfo } = getUser;
 
   if (isLoading) return <Loading />;
-  if (userInfo.isAdmin)
+  if (login && userInfo.isAdmin)
     return (
       <>
         <ScreenAdminFeedbackProvider>
