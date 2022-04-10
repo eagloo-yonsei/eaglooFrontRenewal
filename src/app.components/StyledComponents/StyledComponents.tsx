@@ -180,7 +180,7 @@ const SubmittingButtonContainer = styled.div<{
   height: ${(props) => (props.height ? props.height : '46px')};
   color: white;
   font-size: ${(props) => (props.fontSize ? props.fontSize : '22px')};
-  font-family: ${(props) => props.theme.subLabelFont};
+  font-family: ${(props) => props.theme.plainBoldTextFont};
   border-radius: 8px;
   background: ${(props) => props.theme.orangeGradient};
 `;
