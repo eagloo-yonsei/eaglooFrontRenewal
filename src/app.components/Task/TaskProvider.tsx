@@ -37,6 +37,8 @@ interface TaskContextProp {
   newTaskInputRef?: RefObject<HTMLInputElement>;
   taskModalOpen: boolean;
   handleTaskModalOpen: () => void;
+  calendarMode: boolean;
+  handleCalendarMode: () => void;
 }
 
 const InitialTaskContext: TaskContextProp = {
@@ -62,12 +64,15 @@ const InitialTaskContext: TaskContextProp = {
   deleteTask: () => {},
   taskModalOpen: false,
   handleTaskModalOpen: () => {},
+  calendarMode: false,
+  handleCalendarMode: () => {},
 };
 
 const TaskContext = createContext<TaskContextProp>(InitialTaskContext);
 export const useTaskContext = () => useContext(TaskContext);
 
 export default function TaskProvider({ userInfo, children }) {
+  const [calendarMode, setCalendarMode] = useState<boolean>(false);
   const [taskModalOpen, setTaskModalOpen] = useState<boolean>(false);
   const [taskOpen, setTaskOpen] = useState<boolean>(true);
   const [taskSorted, setTaskSorted] = useState<boolean>(false);
@@ -90,6 +95,10 @@ export default function TaskProvider({ userInfo, children }) {
   }, [userInfo]);
 
   useEffect(() => {});
+
+  function handleCalendarMode() {
+    setCalendarMode(!calendarMode);
+  }
 
   function handleTaskModalOpen() {
     setTaskModalOpen(!taskModalOpen);
@@ -253,6 +262,8 @@ export default function TaskProvider({ userInfo, children }) {
     newTaskInputRef,
     taskModalOpen,
     handleTaskModalOpen,
+    calendarMode,
+    handleCalendarMode,
   };
 
   return (

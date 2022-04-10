@@ -8,21 +8,32 @@ import TaskInput from './Task__Input';
 import { useTaskContext } from './TaskProvider';
 import TaskContent from 'app.components/Task/Task__Content';
 import TaskModal from 'app.components/Task/Task__Modal';
+import TaskCalendar from 'app.components/Task/Task__Calendar';
 
 export default function TaskContainer() {
-  const { taskOpen, taskModalOpen, handleTaskModalOpen } = useTaskContext();
+  const {
+    calendarMode,
+    handleCalendarMode,
+    taskOpen,
+    taskModalOpen,
+    handleTaskModalOpen,
+  } = useTaskContext();
   return (
     <>
       <TaskModal open={taskModalOpen} onClose={handleTaskModalOpen} />
       <TaskOuterContainer taskOpen={taskOpen}>
-        <TaskInnerContainer>
-          <TaskWeek />
-          <TaskSlide />
-          <TaskContent />
-          {/*<TaskBody />*/}
-        </TaskInnerContainer>
+        {!calendarMode ? (
+          <TaskCalendar />
+        ) : (
+          <TaskInnerContainer>
+            <TaskWeek />
+            <TaskSlide />
+            <TaskContent />
+            {/*<TaskBody />*/}
+          </TaskInnerContainer>
+        )}
       </TaskOuterContainer>
-      <TaskInput />
+      {!calendarMode && <TaskInput />}
     </>
   );
 }
@@ -30,7 +41,6 @@ export default function TaskContainer() {
 const TaskOuterContainer = styled.div<{ taskOpen: boolean }>`
   position: relative;
   display: flex;
-  padding: 0px 57px 0 61px;
   justify-content: center;
   align-items: flex-end;
   width: 100%;
@@ -47,5 +57,5 @@ const TaskInnerContainer = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
-  padding-bottom: 90px;
+  padding: 0px 57px 90px 61px;
 `;
