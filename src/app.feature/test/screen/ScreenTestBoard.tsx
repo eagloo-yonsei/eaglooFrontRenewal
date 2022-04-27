@@ -68,6 +68,12 @@ export default ScreenTestBoard;
 const StyledWrapper = styled.div`
   height: 100%;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #000105;
+  padding: 5px 18px 0px 18px;
+  border-radius: 12px;
+  align-items: center;
 
   .brush-picker {
     label {

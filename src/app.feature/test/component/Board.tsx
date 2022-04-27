@@ -4,20 +4,21 @@ import { ReactSketchCanvas } from 'react-sketch-canvas';
 
 const Board = ({ size, color, canvasRef, eraserSize }) => {
   const styles = {
-    border: '0.0625rem solid #9c9c9c',
+    border: '0.0625rem solid black',
     borderRadius: '0.25rem',
   };
 
   return (
     <StyledWrapper>
       <ReactSketchCanvas
+        canvasColor="black"
         ref={canvasRef}
         style={styles}
         width="100%"
         height="100%"
         eraserWidth={eraserSize}
         strokeWidth={size}
-        strokeColor={color}
+        strokeColor="white"
       />
     </StyledWrapper>
   );
