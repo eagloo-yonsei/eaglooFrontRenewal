@@ -51,6 +51,7 @@ interface RoomContextProp {
   handleBoardState: (state: string) => void;
   handleScreenShare: () => void;
   sharing: boolean;
+  setSharing: (state: any) => void;
 }
 
 const InitialRoomContext: RoomContextProp = {
@@ -77,6 +78,7 @@ const InitialRoomContext: RoomContextProp = {
   handleBoardState: () => {},
   handleScreenShare: () => {},
   sharing: false,
+  setSharing: () => {},
 };
 
 const RoomContext = createContext<RoomContextProp>(InitialRoomContext);
@@ -525,6 +527,7 @@ export default function ScreenRoomProvider({
     handleBoardState,
     handleScreenShare,
     sharing,
+    setSharing,
   };
 
   return (

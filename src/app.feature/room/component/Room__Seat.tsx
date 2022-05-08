@@ -92,6 +92,7 @@ function FilledSeat({ peer, seatInfo }: PeerStateProp) {
       <>
         <PeerCam ref={peerStreamHTMLRef} playsInline autoPlay />
         <MicrophoneIcon peerMuted={peerMuted} />
+        <ScreenShareIcon />
         <TimerContainer>
           <TimerPerMinute endTime={seatInfo.endTime} />
         </TimerContainer>
@@ -102,9 +103,14 @@ function FilledSeat({ peer, seatInfo }: PeerStateProp) {
   }
 }
 
+function ScreenShareIcon() {
+  return <div></div>;
+}
+
 function MicrophoneIcon({ peerMuted }: { peerMuted: boolean }) {
   const { roomInfo } = useRoomContext();
-  if ('allowMic' in roomInfo && roomInfo.allowMic) {
+
+  if (!!peerMuted) {
     return (
       <MicrophoneIconContainer peerMuted={peerMuted}>
         {peerMuted ? (
@@ -134,6 +140,7 @@ function GettingStream() {
 
 function SelfSeat() {
   const { userStreamHTMLRef, userMuted } = useRoomContext();
+
   return (
     <SelfContainer>
       <SelfCam ref={userStreamHTMLRef} muted autoPlay playsInline />
