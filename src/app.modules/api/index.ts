@@ -24,7 +24,7 @@ export const request: any = async ({ url, method, data = null }) => {
     console.error('#error-web-client: ', error.toString());
     if (error.toString().includes('Network Error')) {
       toast.error(
-        `😥 네트워크 오류로 처리되지 않았습니다.\\n다시 시도해주세요.`
+        `😥 네트워크 오류로 처리되지 않았습니다.\n다시 시도해주세요.`
       );
     }
   }
