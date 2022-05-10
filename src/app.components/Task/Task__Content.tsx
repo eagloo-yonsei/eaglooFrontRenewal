@@ -28,7 +28,6 @@ export default function TaskContent() {
           return <TaskEach key={task.id} task={task} />;
         })}
       </ScrollContainer>
-      <TaskGroup taskOpen={taskOpen} tasks={tasks} />
     </Container>
   );
 }
@@ -112,7 +111,6 @@ const ScrollContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 180px;
   overflow-y: auto;
   margin-bottom: 34.8px;
 `;

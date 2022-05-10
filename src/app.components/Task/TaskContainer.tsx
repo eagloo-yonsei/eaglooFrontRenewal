@@ -22,7 +22,7 @@ export default function TaskContainer() {
     <>
       <TaskModal open={taskModalOpen} onClose={handleTaskModalOpen} />
       <TaskOuterContainer taskOpen={taskOpen}>
-        {!calendarMode ? (
+        {calendarMode ? (
           <TaskCalendar />
         ) : (
           <TaskInnerContainer>

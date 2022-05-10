@@ -167,12 +167,12 @@ const ContainerLeft = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  width: 70%;
+  width: 65%;
 `;
 
 const ContainerRight = styled(ContainerLeft)`
   justify-content: flex-end;
-  width: 30%;
+  width: 35%;
 `;
 
 const CheckBox = styled.div<{ taskDone: boolean }>`

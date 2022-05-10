@@ -10,11 +10,41 @@ import {
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useTaskContext } from 'app.components/Task/TaskProvider';
 
 const TaskModal = ({ ...props }) => {
+  const {
+    createTask,
+    newTaskInputRef,
+    setNewTaskInput,
+    newTaskInput,
+    handleTaskModalOpen,
+  } = useTaskContext();
+
   return (
     <StyledModal {...props} closable={true}>
-      <input className="task-title" placeholder="일정제목을 입력해주세요." />
+      <input
+        className="task-title"
+        placeholder="일정제목을 입력해주세요."
+        ref={newTaskInputRef}
+        // disabled={
+        //     !isLoggedIn || taskLoading || taskLoadingError || taskUploading
+        // }
+        type="text"
+        spellCheck="false"
+        value={newTaskInput}
+        onChange={(e) => {
+          if (e.target.value.length <= 30) {
+            setNewTaskInput(e.target.value);
+          }
+        }}
+        onKeyPress={(e) => {
+          if (e.key === 'Enter') {
+            createTask();
+            handleTaskModalOpen();
+          }
+        }}
+      />
       <div className="task-clock">
         <FontAwesomeIcon icon={faClock} className="clock-icon" />
         <div className="clock-text">
@@ -38,14 +68,7 @@ const TaskModal = ({ ...props }) => {
           <div className="repeat-date">2022년 1월 23일 (일) 까지 반복</div>
         </div>
       </div>
-      <div className="task-user">
-        <FontAwesomeIcon icon={faUser} className="user-icon" />
-        <input placeholder="참여자를 추가해주세요." />
-      </div>
-      <div className="task-location">
-        <FontAwesomeIcon icon={faMapMarkerAlt} className="location-icon" />
-        <input placeholder="위치를 추가해주세요." />
-      </div>
+
       <div className="task-content">
         <FontAwesomeIcon icon={faAlignLeft} className="content-icon" />
         <textarea placeholder="설명을 추가해주세요." />
@@ -54,7 +77,15 @@ const TaskModal = ({ ...props }) => {
         <FontAwesomeIcon icon={faBell} className="alarm-icon" />
         <div className="alarm-text">알람설정</div>
       </div>
-      <div className="save-button">저장</div>
+      <div
+        className="save-button"
+        onClick={() => {
+          createTask();
+          handleTaskModalOpen();
+        }}
+      >
+        저장
+      </div>
     </StyledModal>
   );
 };

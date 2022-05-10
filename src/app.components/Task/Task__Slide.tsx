@@ -1,13 +1,14 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
+import { useTaskContext } from 'app.components/Task/TaskProvider';
 
 export default function TaskSlide() {
-  const percentage = 35;
+  const { taskPercentage } = useTaskContext();
 
   return (
-    <Container percentage={percentage}>
+    <Container percentage={taskPercentage}>
       <div className="task-slide-wrap">
-        <div className="percentage">{percentage}%</div>
+        <div className="percentage">{taskPercentage}%</div>
         <div className="slide-line"></div>
       </div>
     </Container>
@@ -24,6 +25,7 @@ const Container = styled.div`
 
       .percentage {
         padding-left: calc(${percentage}% - 13px);
+        transition: all 200ms;
         width: 100%;
         color: #b3d0ff;
         font-size: 12px;

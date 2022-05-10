@@ -59,7 +59,6 @@ export default function TaskInput() {
       <NewTaskDday />
       {/* <TaskDdayBox /> */}
       <NewTaskImportance />
-      <NewTaskGroup />
     </Container>
   );
 }

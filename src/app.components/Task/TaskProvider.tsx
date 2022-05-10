@@ -39,6 +39,7 @@ interface TaskContextProp {
   handleTaskModalOpen: () => void;
   calendarMode: boolean;
   handleCalendarMode: () => void;
+  taskPercentage: number;
 }
 
 const InitialTaskContext: TaskContextProp = {
@@ -66,6 +67,7 @@ const InitialTaskContext: TaskContextProp = {
   handleTaskModalOpen: () => {},
   calendarMode: false,
   handleCalendarMode: () => {},
+  taskPercentage: 0,
 };
 
 const TaskContext = createContext<TaskContextProp>(InitialTaskContext);
@@ -85,6 +87,8 @@ export default function TaskProvider({ userInfo, children }) {
   const [taskLoading, setTaskLoading] = useState<boolean>(false);
   const [taskLoadingError, setTaskLoadingError] = useState<boolean>(false);
   const [taskUploading, setTaskUploading] = useState<boolean>(false);
+  const [taskPercentage, setTaskPercentage] = useState<number>(0);
+
   const newTaskInputRef = useRef<HTMLInputElement>(null);
 
   const API_ENDPOINT = process.env.EAGLOO_API_URI;
@@ -121,6 +125,12 @@ export default function TaskProvider({ userInfo, children }) {
         if (response.data.success) {
           setTasks(response.data.tasks);
           // sortTasksByImportance(false);
+          const done = response.data.tasks.reduce((acc, cur) => {
+            if (cur?.done) acc = acc + 1;
+            return acc;
+          }, 0);
+          const taskNumber = response.data.tasks.length;
+          setTaskPercentage((done / taskNumber) * 100);
         } else {
           toastErrorMessage(response.data.message);
         }
@@ -175,11 +185,7 @@ export default function TaskProvider({ userInfo, children }) {
       )
       .then((response) => {
         if (response.data.success) {
-          setTasks((tasks) =>
-            tasks.filter((task) => {
-              return task.id !== id;
-            })
-          );
+          loadTask();
         } else {
           toastErrorMessage(response.data.message);
         }
@@ -264,6 +270,7 @@ export default function TaskProvider({ userInfo, children }) {
     handleTaskModalOpen,
     calendarMode,
     handleCalendarMode,
+    taskPercentage,
   };
 
   return (
