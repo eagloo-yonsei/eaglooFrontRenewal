@@ -47,6 +47,8 @@ const StyledWrapper = styled.div`
 
     &:hover {
       .yonsei-menu {
+        position: absolute;
+        top: 50px;
         opacity: 1;
         a {
           height: 60px;
@@ -56,11 +58,10 @@ const StyledWrapper = styled.div`
 
     .yonsei-menu {
       transition: all 300ms;
-
       position: absolute;
       display: block;
       opacity: 0;
-      top: 50px;
+      top: 0;
       left: 0;
       z-index: 2;
 

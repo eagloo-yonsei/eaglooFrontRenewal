@@ -1,18 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import SchedulerHeader from './Scheduler__Header';
 import Task from '../Task';
 import { useStoreScheduler } from 'app.store/scheduler/store.scheduler';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalendar } from '@fortawesome/free-solid-svg-icons';
+import { useTaskContext } from 'app.components/Task/TaskProvider';
 
 export default function SchedulerContainer() {
   const schedulerOpen = useStoreScheduler((state) => state.schedulerOpen);
-  console.log(schedulerOpen);
+
   return (
     <SchedulerOuterContainer schedulerOpen={schedulerOpen}>
       <SchedulerInnerContainer>
-        <Container>
-          <SchedulerHeader />
-        </Container>
+        {/*<Container>*/}
+        {/*  <SchedulerHeader />*/}
+        {/*</Container>*/}
         <Task />
       </SchedulerInnerContainer>
     </SchedulerOuterContainer>
@@ -30,9 +33,8 @@ const SchedulerOuterContainer = styled.div<{ schedulerOpen: boolean }>`
   width: ${(props) => props.theme.slideMenuWidth};
   height: calc(100% - 190px);
   background-color: white;
-  padding: 10px 20px 0px 20px;
-  border-top-left-radius: 16px;
-  border-bottom-left-radius: 16px;
+  border-top-left-radius: 30.7px;
+  border-bottom-left-radius: 30.7px;
   transform: translate(
     ${(props) => {
       return props.schedulerOpen ? '0' : props.theme.slideMenuWidth;
@@ -45,9 +47,6 @@ const SchedulerOuterContainer = styled.div<{ schedulerOpen: boolean }>`
 
 const SchedulerInnerContainer = styled.div`
   position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: 100%;
   height: 100%;
 `;
@@ -58,5 +57,5 @@ const Container = styled.div`
   justify-content: flex-start;
   align-items: center;
   width: 100%;
-  height: 100%;
+  height: 102px;
 `;

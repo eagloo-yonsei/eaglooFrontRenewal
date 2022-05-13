@@ -1,18 +1,15 @@
-// Shceduler Header 높이에 맞춰서 Task 높이도 수정
 import React from 'react';
 import styled from 'styled-components';
 
-export default function SchedulerHeader() {
-  const dayName = ['일', '월', '화', '수', '목', '금', '토'];
+export default function TaskCalendarHeader() {
   const today = new Date();
+  const year = today.getFullYear();
   const month = today.getMonth() + 1;
-  const date = today.getDate();
-  const day = dayName[today.getDay()];
 
   return (
     <Container>
       <DateContainer>
-        <Day>{`${month}월 ${date}일 ${day}`}</Day>
+        <Day>{`${year}년 ${month}월`}</Day>
       </DateContainer>
     </Container>
   );

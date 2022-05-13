@@ -1,10 +1,16 @@
 import React, { forwardRef } from 'react';
 import styled from 'styled-components';
 import { useTaskContext } from './TaskProvider';
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import TaskImportance from './Task__Importance';
 import { useGetUser } from 'app.store/intoAPP/store.intoAPP';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faCaretDown,
+  faCaretUp,
+  faEllipsisV,
+} from '@fortawesome/free-solid-svg-icons';
 
 export default function TaskInput() {
   const { login: isLoggedIn, isLoading } = useGetUser();
@@ -19,11 +25,17 @@ export default function TaskInput() {
     setNewTaskDday,
     createTask,
     newTaskInputRef,
+    handleTaskModalOpen,
   } = useTaskContext();
 
   if (isLoading) return null;
   return (
     <Container>
+      <FontAwesomeIcon
+        className="more-icon"
+        icon={faEllipsisV}
+        onClick={handleTaskModalOpen}
+      />
       <NewTaskInput
         ref={newTaskInputRef}
         disabled={
@@ -32,7 +44,7 @@ export default function TaskInput() {
         type="text"
         spellCheck="false"
         value={newTaskInput}
-        placeholder="새 일정을 입력해주세요"
+        placeholder="일정을 적어주세요"
         onChange={(e) => {
           if (e.target.value.length <= 30) {
             setNewTaskInput(e.target.value);
@@ -44,7 +56,7 @@ export default function TaskInput() {
           }
         }}
       />
-      {/* <NewTaskDday /> */}
+      <NewTaskDday />
       {/* <TaskDdayBox /> */}
       <NewTaskImportance />
     </Container>
@@ -55,10 +67,14 @@ function NewTaskDday() {
   const { newTaksDday, setNewTaskDday } = useTaskContext();
 
   return (
-    <DatePicker
-      selected={newTaksDday}
-      onChange={(date) => setNewTaskDday(date as Date)}
-    />
+    // <DatePicker
+    //   selected={newTaksDday}
+    //   onChange={(date) => setNewTaskDday(date as Date)}
+    // />
+    <div className="new-task-dday">
+      <div>디데이</div>
+      <FontAwesomeIcon icon={faCaretUp} />
+    </div>
   );
 }
 
@@ -66,7 +82,7 @@ function NewTaskImportance() {
   const { newTaskImportance, selectNewTaskImportance } = useTaskContext();
   return (
     <NewTaskImportanceContainer>
-      {`중요도`}
+      <div className="importance-text">중요도</div>
       <TaskImportance
         importance={newTaskImportance}
         importanceSettingFunc={selectNewTaskImportance}
@@ -75,31 +91,64 @@ function NewTaskImportance() {
   );
 }
 
+function NewTaskGroup() {
+  return (
+    <NewTaskGroupContainer>
+      <div>개인</div>
+      <FontAwesomeIcon icon={faCaretUp} />
+    </NewTaskGroupContainer>
+  );
+}
+
 const Container = styled.div`
   position: absolute;
-  bottom: 0px;
+  bottom: 0;
+  right: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 50px;
-  font-family: ${(props) => props.theme.subLabelFont};
-  padding: 5px 25px;
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
-  background-color: ${(props) => props.theme.mainDarkBlue};
+  height: 67.5px;
+  font-family: ${(props) => props.theme.plainBoldTextFont};
+  padding: 21px;
+  border-radius: 20.6px 20.6px 0 20.6px;
+  background-color: #e1edff;
+
+  .react-datepicker__input-container {
+    display: none;
+  }
+
+  .more-icon {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .new-task-dday {
+    color: #0043a5;
+    display: flex;
+    min-width: 65px;
+    margin-right: 20px;
+
+    div {
+      margin-right: 5px;
+    }
+  }
 `;
 
 const NewTaskInput = styled.input`
-  width: calc(100% - 190px);
-  color: white;
-  background-color: inherit;
+  border-radius: 5.4px;
+  background-color: #fff;
   font-size: 16px;
   padding: 10px 10px;
-  margin-right: 15px;
+  height: 24px;
+  width: 100%;
+  margin-left: 20px;
+  margin-right: 12.5px;
   border: none;
-  border-bottom: 2px solid ${(props) => props.theme.mainLightBlue};
-  font-family: ${(props) => props.theme.subLabelFont};
+  color: #0043a5;
+  font-family: ${(props) => props.theme.plainBoldTextFont};
+
   :focus {
     outline: none;
   }
@@ -117,17 +166,35 @@ const TaskDdayBox = styled.div`
   margin-right: 15px;
   color: white;
   font-size: 15px;
-  font-family: ${(props) => props.theme.subLabelFont};
   background-color: white;
 `;
 
 const NewTaskImportanceContainer = styled.div`
   display: flex;
+  color: #0043a5;
   justify-content: space-between;
   align-items: center;
-  width: 100px;
   height: 100%;
-  color: white;
   font-size: 15px;
-  font-family: ${(props) => props.theme.subLabelFont};
+  margin-right: 13.8px;
+
+  .importance-text {
+    width: 45px;
+    margin-right: 6.5px;
+  }
+
+  .importance-circle {
+    border: none;
+  }
+`;
+
+const NewTaskGroupContainer = styled.div`
+  width: 43px;
+  word-break: keep-all;
+  color: #0043a5;
+  display: flex;
+
+  div {
+    margin-right: 5px;
+  }
 `;

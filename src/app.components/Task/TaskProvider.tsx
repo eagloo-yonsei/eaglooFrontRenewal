@@ -35,6 +35,13 @@ interface TaskContextProp {
   ) => Promise<boolean>;
   deleteTask: (id: string) => void;
   newTaskInputRef?: RefObject<HTMLInputElement>;
+  taskModalOpen: boolean;
+  handleTaskModalOpen: () => void;
+  calendarMode: boolean;
+  handleCalendarMode: () => void;
+  taskPercentage: number;
+  calendarDayTask: number;
+  handleCalendarDayTask: (day: number) => void;
 }
 
 const InitialTaskContext: TaskContextProp = {
@@ -58,12 +65,21 @@ const InitialTaskContext: TaskContextProp = {
     return new Promise(() => false);
   },
   deleteTask: () => {},
+  taskModalOpen: false,
+  handleTaskModalOpen: () => {},
+  calendarMode: false,
+  handleCalendarMode: () => {},
+  taskPercentage: 0,
+  calendarDayTask: 0,
+  handleCalendarDayTask: () => {},
 };
 
 const TaskContext = createContext<TaskContextProp>(InitialTaskContext);
 export const useTaskContext = () => useContext(TaskContext);
 
 export default function TaskProvider({ userInfo, children }) {
+  const [calendarMode, setCalendarMode] = useState<boolean>(false);
+  const [taskModalOpen, setTaskModalOpen] = useState<boolean>(false);
   const [taskOpen, setTaskOpen] = useState<boolean>(true);
   const [taskSorted, setTaskSorted] = useState<boolean>(false);
   const [sortedByImportanceAscending, setSortedByImportanceAscending] =
@@ -75,6 +91,8 @@ export default function TaskProvider({ userInfo, children }) {
   const [taskLoading, setTaskLoading] = useState<boolean>(false);
   const [taskLoadingError, setTaskLoadingError] = useState<boolean>(false);
   const [taskUploading, setTaskUploading] = useState<boolean>(false);
+  const [taskPercentage, setTaskPercentage] = useState<number>(0);
+  const [calendarDayTask, setCalendarDayTask] = useState<number>(0);
   const newTaskInputRef = useRef<HTMLInputElement>(null);
 
   const API_ENDPOINT = process.env.EAGLOO_API_URI;
@@ -83,6 +101,18 @@ export default function TaskProvider({ userInfo, children }) {
     loadTask();
     return () => {};
   }, [userInfo]);
+
+  function handleCalendarDayTask(day) {
+    setCalendarDayTask(day);
+  }
+
+  function handleCalendarMode() {
+    setCalendarMode(!calendarMode);
+  }
+
+  function handleTaskModalOpen() {
+    setTaskModalOpen(!taskModalOpen);
+  }
 
   function toggleTaskOpen() {
     setTaskOpen(!taskOpen);
@@ -101,6 +131,12 @@ export default function TaskProvider({ userInfo, children }) {
         if (response.data.success) {
           setTasks(response.data.tasks);
           // sortTasksByImportance(false);
+          const done = response.data.tasks.reduce((acc, cur) => {
+            if (cur?.done) acc = acc + 1;
+            return acc;
+          }, 0);
+          const taskNumber = response.data.tasks.length;
+          setTaskPercentage((done / taskNumber) * 100);
         } else {
           toastErrorMessage(response.data.message);
         }
@@ -140,6 +176,7 @@ export default function TaskProvider({ userInfo, children }) {
         };
       });
     if (response.data.success) {
+      loadTask();
       return true;
     } else {
       toastErrorMessage(response.data.message);
@@ -154,11 +191,7 @@ export default function TaskProvider({ userInfo, children }) {
       )
       .then((response) => {
         if (response.data.success) {
-          setTasks((tasks) =>
-            tasks.filter((task) => {
-              return task.id !== id;
-            })
-          );
+          loadTask();
         } else {
           toastErrorMessage(response.data.message);
         }
@@ -239,6 +272,13 @@ export default function TaskProvider({ userInfo, children }) {
     updateTask,
     deleteTask,
     newTaskInputRef,
+    taskModalOpen,
+    handleTaskModalOpen,
+    calendarMode,
+    handleCalendarMode,
+    taskPercentage,
+    calendarDayTask,
+    handleCalendarDayTask,
   };
 
   return (
