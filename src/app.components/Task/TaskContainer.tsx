@@ -9,6 +9,10 @@ import { useTaskContext } from './TaskProvider';
 import TaskContent from 'app.components/Task/Task__Content';
 import TaskModal from 'app.components/Task/Task__Modal';
 import TaskCalendar from 'app.components/Task/Task__Calendar';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalendar } from '@fortawesome/free-solid-svg-icons';
+import TaskHeader from 'app.components/Task/Task__Header';
+import TaskCalendarHeader from 'app.components/Task/Task__CalendarHeader';
 
 export default function TaskContainer() {
   const {
@@ -17,15 +21,31 @@ export default function TaskContainer() {
     taskOpen,
     taskModalOpen,
     handleTaskModalOpen,
+    handleCalendarDayTask,
   } = useTaskContext();
+
   return (
     <>
       <TaskModal open={taskModalOpen} onClose={handleTaskModalOpen} />
-      <TaskOuterContainer taskOpen={taskOpen}>
+      <TaskOuterContainer
+        taskOpen={taskOpen}
+        onClick={() => calendarMode && handleCalendarDayTask(0)}
+      >
+        <div className="calendar-button">
+          <FontAwesomeIcon
+            icon={faCalendar}
+            onClick={handleCalendarMode}
+            size="2x"
+          />
+        </div>
         {calendarMode ? (
-          <TaskCalendar />
+          <TaskInnerContainer>
+            <TaskCalendarHeader />
+            <TaskCalendar />
+          </TaskInnerContainer>
         ) : (
           <TaskInnerContainer>
+            <TaskHeader />
             <TaskWeek />
             <TaskSlide />
             <TaskContent />
@@ -46,6 +66,15 @@ const TaskOuterContainer = styled.div<{ taskOpen: boolean }>`
   width: 100%;
   height: calc(100% - 102px);
   transition: all 0.5s ${(props) => props.theme.animationCubic};
+
+  .calendar-button {
+    position: absolute;
+    top: 30px;
+    left: 61px;
+    color: #b3d0ff;
+    cursor: pointer;
+    z-index: 100;
+  }
 `;
 
 const TaskInnerContainer = styled.div`

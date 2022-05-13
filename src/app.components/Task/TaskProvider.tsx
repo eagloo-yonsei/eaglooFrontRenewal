@@ -40,6 +40,8 @@ interface TaskContextProp {
   calendarMode: boolean;
   handleCalendarMode: () => void;
   taskPercentage: number;
+  calendarDayTask: number;
+  handleCalendarDayTask: (day: number) => void;
 }
 
 const InitialTaskContext: TaskContextProp = {
@@ -68,6 +70,8 @@ const InitialTaskContext: TaskContextProp = {
   calendarMode: false,
   handleCalendarMode: () => {},
   taskPercentage: 0,
+  calendarDayTask: 0,
+  handleCalendarDayTask: () => {},
 };
 
 const TaskContext = createContext<TaskContextProp>(InitialTaskContext);
@@ -88,7 +92,7 @@ export default function TaskProvider({ userInfo, children }) {
   const [taskLoadingError, setTaskLoadingError] = useState<boolean>(false);
   const [taskUploading, setTaskUploading] = useState<boolean>(false);
   const [taskPercentage, setTaskPercentage] = useState<number>(0);
-
+  const [calendarDayTask, setCalendarDayTask] = useState<number>(0);
   const newTaskInputRef = useRef<HTMLInputElement>(null);
 
   const API_ENDPOINT = process.env.EAGLOO_API_URI;
@@ -98,7 +102,9 @@ export default function TaskProvider({ userInfo, children }) {
     return () => {};
   }, [userInfo]);
 
-  useEffect(() => {});
+  function handleCalendarDayTask(day) {
+    setCalendarDayTask(day);
+  }
 
   function handleCalendarMode() {
     setCalendarMode(!calendarMode);
@@ -271,6 +277,8 @@ export default function TaskProvider({ userInfo, children }) {
     calendarMode,
     handleCalendarMode,
     taskPercentage,
+    calendarDayTask,
+    handleCalendarDayTask,
   };
 
   return (

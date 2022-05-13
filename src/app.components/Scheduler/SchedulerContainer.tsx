@@ -1,17 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import SchedulerHeader from './Scheduler__Header';
 import Task from '../Task';
 import { useStoreScheduler } from 'app.store/scheduler/store.scheduler';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalendar } from '@fortawesome/free-solid-svg-icons';
+import { useTaskContext } from 'app.components/Task/TaskProvider';
 
 export default function SchedulerContainer() {
   const schedulerOpen = useStoreScheduler((state) => state.schedulerOpen);
+
   return (
     <SchedulerOuterContainer schedulerOpen={schedulerOpen}>
       <SchedulerInnerContainer>
-        <Container>
-          <SchedulerHeader />
-        </Container>
+        {/*<Container>*/}
+        {/*  <SchedulerHeader />*/}
+        {/*</Container>*/}
         <Task />
       </SchedulerInnerContainer>
     </SchedulerOuterContainer>
