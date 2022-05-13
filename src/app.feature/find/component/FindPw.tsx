@@ -9,6 +9,8 @@ import {
 import { useStoreScheduler } from 'app.store/scheduler/store.scheduler';
 import { useStorePasswordSecret } from 'app.store/passwordSecret/store.passwordSecret';
 import { useRouter } from 'next/router';
+import { RoomType } from 'app.modules/constant/interface';
+import { toastErrorMessage } from 'app.modules/util/ToastMessage';
 
 const FindPw = () => {
   const [emailInput, setEmailInput] = useState<string>('');
@@ -35,7 +37,13 @@ const FindPw = () => {
           email: emailInput,
         },
       });
-      setPasswordSecret();
+      if (res.data.success) {
+        setPasswordSecret();
+      } else {
+        toastErrorMessage(
+          res.data.message || '메일 전송 중 오류가 발생했어요.'
+        );
+      }
     } catch (err) {}
   };
 
