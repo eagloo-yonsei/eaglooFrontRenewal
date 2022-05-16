@@ -57,9 +57,17 @@ const FindPw = () => {
           newPassword: passwordInput,
         },
       });
-      router.push('/login');
+      if (res.data.success) {
+        setPasswordSecret();
+        router.push('/login');
+      } else {
+        toastErrorMessage(
+          res.data.message || '메일 전송 중 오류가 발생했어요.'
+        );
+      }
     } catch (err) {}
   };
+
   return (
     <StyledWrapper>
       {passwordSecret ? (
@@ -76,7 +84,7 @@ const FindPw = () => {
                 onChange={(e) => setEmailInput(e.target.value)}
                 onKeyPress={(e) => {
                   if (e.key === 'Enter') {
-                    // signIn();
+                    resetPassword();
                   }
                 }}
               />
@@ -89,33 +97,33 @@ const FindPw = () => {
               placeholder="인증번호"
               onChange={(e) => setSecretInput(e.target.value)}
               onKeyPress={(e) => {
-                // if (e.key === 'Enter') {
-                //   signIn();
-                // }
+                if (e.key === 'Enter') {
+                  resetPassword();
+                }
               }}
             />
             <input
-              type="text"
+              type="password"
               spellCheck="false"
               value={passwordInput}
               placeholder="새 비밀번호"
               onChange={(e) => setPasswordInput(e.target.value)}
               onKeyPress={(e) => {
-                // if (e.key === 'Enter') {
-                //   signIn();
-                // }
+                if (e.key === 'Enter') {
+                  resetPassword();
+                }
               }}
             />
             <input
-              type="text"
+              type="password"
               spellCheck="false"
               value={passwordConfirmInput}
               placeholder="새 비밀번호 확인"
               onChange={(e) => setPasswordConfirmInput(e.target.value)}
               onKeyPress={(e) => {
-                // if (e.key === 'Enter') {
-                //   signIn();
-                // }
+                if (e.key === 'Enter') {
+                  resetPassword();
+                }
               }}
             />
             <SubmitButton
