@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import TaskCalendarDayTask from 'app.components/Task/Task__CalendarDayTask';
 import { useTaskContext } from 'app.components/Task/TaskProvider';
@@ -12,14 +12,26 @@ const TaskCalendar = () => {
     calendarShowMonth,
   } = useTaskContext();
 
-  const currentYear = new Date().getFullYear();
-  const currentMonth = new Date().getMonth();
-  const endDay = new Date(calendarShowYear, calendarShowMonth, 0);
-  const startDay = new Date(calendarShowYear, calendarShowMonth - 1, 1);
+  const [endDay, setEndDay] = useState(
+    new Date(calendarShowYear, calendarShowMonth, 0)
+  );
+  const [startDay, setStartDay] = useState(
+    new Date(calendarShowYear, calendarShowMonth - 1, 1)
+  );
+
   const today = new Date();
-  const date = today.getDate();
-  const calculate = today;
+  const [date, setDate] = useState(today.getDate());
+  const [calculate, setCalculate] = useState(today);
   calculate.setDate(date - today.getDay());
+
+  useEffect(() => {
+    setEndDay(new Date(calendarShowYear, calendarShowMonth, 0));
+    setStartDay(new Date(calendarShowYear, calendarShowMonth - 1, 1));
+    const today = new Date();
+    setDate(today.getDate());
+    setCalculate(today);
+    calculate.setDate(date - today.getDay());
+  }, [calendarShowMonth]);
 
   return (
     <StyledWrapper>
@@ -54,7 +66,11 @@ const TaskCalendar = () => {
                 {calendarDayTask === i + 1 && (
                   <TaskCalendarDayTask
                     showDay={i + 1}
-                    day={new Date(currentYear, currentMonth, i + 1).getDay()}
+                    day={new Date(
+                      calendarShowYear,
+                      calendarShowMonth - 1,
+                      i + 1
+                    ).getDay()}
                   />
                 )}
               </div>

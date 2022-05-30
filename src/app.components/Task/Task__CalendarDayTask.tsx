@@ -13,6 +13,8 @@ const TaskCalendarDayTask = ({ showDay, day }) => {
     handleCalendarDayTask,
   } = useTaskContext();
 
+  console.log(day);
+  console.log(showDay);
   return (
     <StyledWrapper
       day={day <= 3 ? 'left' : 'right'}
