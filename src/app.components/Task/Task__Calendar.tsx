@@ -5,16 +5,21 @@ import { useTaskContext } from 'app.components/Task/TaskProvider';
 const dayName = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 const TaskCalendar = () => {
+  const {
+    calendarDayTask,
+    handleCalendarDayTask,
+    calendarShowYear,
+    calendarShowMonth,
+  } = useTaskContext();
+
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth();
-  const endDay = new Date(currentYear, currentMonth + 1, 0);
-  const startDay = new Date(currentYear, currentMonth, 1);
+  const endDay = new Date(calendarShowYear, calendarShowMonth, 0);
+  const startDay = new Date(calendarShowYear, calendarShowMonth - 1, 1);
   const today = new Date();
   const date = today.getDate();
   const calculate = today;
   calculate.setDate(date - today.getDay());
-
-  const { calendarDayTask, handleCalendarDayTask } = useTaskContext();
 
   return (
     <StyledWrapper>

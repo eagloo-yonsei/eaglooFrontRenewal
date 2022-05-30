@@ -42,6 +42,10 @@ interface TaskContextProp {
   taskPercentage: number;
   calendarDayTask: number;
   handleCalendarDayTask: (day: number) => void;
+  calendarShowYear: number;
+  calendarShowMonth: number;
+  setCalendarShowYear: (day: number) => void;
+  setCalendarShowMonth: (day: number) => void;
 }
 
 const InitialTaskContext: TaskContextProp = {
@@ -72,6 +76,10 @@ const InitialTaskContext: TaskContextProp = {
   taskPercentage: 0,
   calendarDayTask: 0,
   handleCalendarDayTask: () => {},
+  calendarShowYear: 0,
+  calendarShowMonth: 0,
+  setCalendarShowYear: () => {},
+  setCalendarShowMonth: () => {},
 };
 
 const TaskContext = createContext<TaskContextProp>(InitialTaskContext);
@@ -94,6 +102,12 @@ export default function TaskProvider({ userInfo, children }) {
   const [taskPercentage, setTaskPercentage] = useState<number>(0);
   const [calendarDayTask, setCalendarDayTask] = useState<number>(0);
   const newTaskInputRef = useRef<HTMLInputElement>(null);
+  const [calendarShowYear, setCalendarShowYear] = useState<number>(
+    new Date().getFullYear()
+  );
+  const [calendarShowMonth, setCalendarShowMonth] = useState<number>(
+    new Date().getMonth() + 1
+  );
 
   const API_ENDPOINT = process.env.EAGLOO_API_URI;
 
@@ -279,6 +293,10 @@ export default function TaskProvider({ userInfo, children }) {
     taskPercentage,
     calendarDayTask,
     handleCalendarDayTask,
+    calendarShowYear,
+    calendarShowMonth,
+    setCalendarShowYear,
+    setCalendarShowMonth,
   };
 
   return (
