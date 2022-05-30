@@ -11,6 +11,7 @@ import { useStorePasswordSecret } from 'app.store/passwordSecret/store.passwordS
 import { useRouter } from 'next/router';
 import { RoomType } from 'app.modules/constant/interface';
 import { toastErrorMessage } from 'app.modules/util/ToastMessage';
+import { SHA3 } from 'sha3';
 
 const FindPw = () => {
   const [emailInput, setEmailInput] = useState<string>('');
@@ -26,6 +27,8 @@ const FindPw = () => {
   const setPasswordSecret = useStorePasswordSecret(
     (state) => state.setPasswordSecret
   );
+
+  const hashedPassword = new SHA3(512);
 
   const router = useRouter();
 
@@ -49,12 +52,15 @@ const FindPw = () => {
 
   const resetPassword = async () => {
     try {
+      hashedPassword.reset();
+      hashedPassword.update(passwordInput);
+
       const res = await API.POST({
         url: API_RESET_PASSWORD,
         data: {
           email: emailInput,
           givenSecret: secretInput,
-          newPassword: passwordInput,
+          newPassword: hashedPassword.digest('hex'),
         },
       });
       if (res.data.success) {
