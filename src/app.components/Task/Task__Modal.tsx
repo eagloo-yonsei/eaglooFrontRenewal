@@ -7,6 +7,7 @@ import {
   faClock,
   faHistory,
   faMapMarkerAlt,
+  faPalette,
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -76,6 +77,14 @@ const TaskModal = ({ ...props }) => {
       <div className="task-alarm">
         <FontAwesomeIcon icon={faBell} className="alarm-icon" />
         <div className="alarm-text">알람설정</div>
+      </div>
+      <div className="task-color">
+        <FontAwesomeIcon icon={faPalette} className="color-icon" />
+        <div className="color-text">색상설정</div>
+      </div>
+      <div className="task-importance">
+        <FontAwesomeIcon icon={faPalette} className="importance-icon" />
+        <div className="importance-text">중요도설정</div>
       </div>
       <div
         className="save-button"
@@ -267,6 +276,7 @@ const StyledModal = styled(Modal)`
   .task-alarm {
     display: flex;
     font-family: ${(props) => props.theme.plainBoldTextFont};
+    margin-bottom: 23px;
 
     .alarm-icon {
       color: #0043a5;
@@ -275,6 +285,43 @@ const StyledModal = styled(Modal)`
     }
 
     .alarm-text {
+      font-size: 18px;
+      color: #b3d0ff;
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .task-color {
+    display: flex;
+    font-family: ${(props) => props.theme.plainBoldTextFont};
+    margin-bottom: 23px;
+
+    .color-icon {
+      color: #0043a5;
+      font-size: 25px;
+      margin-right: 18px;
+    }
+
+    .color-text {
+      font-size: 18px;
+      color: #b3d0ff;
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .task-importance {
+    display: flex;
+    font-family: ${(props) => props.theme.plainBoldTextFont};
+
+    .importance-icon {
+      color: #0043a5;
+      font-size: 25px;
+      margin-right: 18px;
+    }
+
+    .importance-text {
       font-size: 18px;
       color: #b3d0ff;
       display: flex;
