@@ -5,22 +5,22 @@ const dayName = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 export default function TaskWeek() {
   const today = new Date();
-  const date = today.getDate();
-  const calculate = today;
-  calculate.setDate(date - today.getDay());
+  const DaysBefore = new Date(today.setDate(today.getDate() - 4));
 
   return (
     <Container>
       <div className="week-wrap">
-        {dayName.map((item, idx) => {
-          const sundayDate = calculate;
-          sundayDate.setDate(calculate.getDate() + (idx === 0 ? 0 : 1));
-
+        {[0, 1, 2, 3, 4, 5, 6].map((item, idx) => {
+          DaysBefore.setDate(DaysBefore.getDate() + 1);
           return (
-            <div className={`week ${idx === 0}`} key={idx}>
-              <div className="day">{item}</div>
-              <div className={`date ${date === sundayDate.getDate()}`}>
-                {sundayDate.getDate()}
+            <div className={`week ${DaysBefore.getDay() === 0}`} key={idx}>
+              <div className="day">{dayName[DaysBefore.getDay()]}</div>
+              <div
+                className={`date ${
+                  DaysBefore.getDate() === new Date().getDate()
+                }`}
+              >
+                {DaysBefore.getDate()}
               </div>
             </div>
           );

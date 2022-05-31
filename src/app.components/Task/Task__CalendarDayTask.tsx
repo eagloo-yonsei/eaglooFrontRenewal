@@ -2,26 +2,19 @@ import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { useTaskContext } from 'app.components/Task/TaskProvider';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faCalendar,
-  faPen,
-  faPlus,
-  faTrash,
-} from '@fortawesome/free-solid-svg-icons';
+import { faPen, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const TaskCalendarDayTask = ({ showDay, day }) => {
   const {
-    taskOpen,
     tasks,
     taskLoading,
-    taskLoadingError,
     handleTaskModalOpen,
-    handleCalendarMode,
     deleteTask,
     handleCalendarDayTask,
   } = useTaskContext();
 
   console.log(day);
+  console.log(showDay);
   return (
     <StyledWrapper
       day={day <= 3 ? 'left' : 'right'}
@@ -65,9 +58,6 @@ const TaskCalendarDayTask = ({ showDay, day }) => {
       <div className="bottom-wrap">
         <div className="bottom-plus" onClick={handleTaskModalOpen}>
           <FontAwesomeIcon icon={faPlus} />
-        </div>
-        <div className="bottom-calendar" onClick={handleCalendarMode}>
-          <FontAwesomeIcon icon={faCalendar} size="2x" />
         </div>
       </div>
     </StyledWrapper>

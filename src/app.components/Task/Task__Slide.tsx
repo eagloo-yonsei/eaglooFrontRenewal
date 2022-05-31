@@ -8,7 +8,7 @@ export default function TaskSlide() {
   return (
     <Container percentage={taskPercentage}>
       <div className="task-slide-wrap">
-        <div className="percentage">{taskPercentage}%</div>
+        <div className="percentage">{taskPercentage.toFixed(2)}%</div>
         <div className="slide-line"></div>
       </div>
     </Container>
@@ -47,7 +47,11 @@ const Container = styled.div`
           width: ${percentage}%;
           border-radius: 2.2px 0 0 2.2px;
           height: 4.3px;
-          background-color: #ff7d5a;
+          background-color: ${Number(percentage) <= 33
+            ? '#f27872'
+            : Number(percentage) <= 66
+            ? '#f9d953'
+            : '#71af78'};
         }
 
         &:after {
@@ -59,7 +63,11 @@ const Container = styled.div`
           width: 11.3px;
           height: 11.3px;
           border-radius: 3px;
-          background-color: #ff7d5a;
+          background-color: ${Number(percentage) <= 33
+            ? '#f27872'
+            : Number(percentage) <= 66
+            ? '#f9d953'
+            : '#71af78'};
         }
       }
     }
