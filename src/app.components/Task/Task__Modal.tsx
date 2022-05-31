@@ -9,9 +9,13 @@ import {
   faMapMarkerAlt,
   faPalette,
   faUser,
+  faExclamation,
+  faExclamationCircle,
+  faExclamationTriangle,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useTaskContext } from 'app.components/Task/TaskProvider';
+import TaskImportance from 'app.components/Task/Task__Importance';
 
 const TaskModal = ({ ...props }) => {
   const {
@@ -21,6 +25,8 @@ const TaskModal = ({ ...props }) => {
     newTaskInput,
     handleTaskModalOpen,
   } = useTaskContext();
+
+  const { newTaskImportance, selectNewTaskImportance } = useTaskContext();
 
   return (
     <StyledModal {...props} closable={true}>
@@ -81,10 +87,19 @@ const TaskModal = ({ ...props }) => {
       <div className="task-color">
         <FontAwesomeIcon icon={faPalette} className="color-icon" />
         <div className="color-text">색상설정</div>
+        <input type="color" className="color-input" />
       </div>
       <div className="task-importance">
-        <FontAwesomeIcon icon={faPalette} className="importance-icon" />
+        <FontAwesomeIcon
+          icon={faExclamationTriangle}
+          className="importance-icon"
+        />
         <div className="importance-text">중요도설정</div>
+
+        <TaskImportance
+          importance={newTaskImportance}
+          importanceSettingFunc={selectNewTaskImportance}
+        />
       </div>
       <div
         className="save-button"
@@ -308,11 +323,20 @@ const StyledModal = styled(Modal)`
       color: #b3d0ff;
       display: flex;
       align-items: center;
+      margin-right: 18px;
+    }
+
+    .color-input {
+      border: none;
+      color: white;
+      padding: 0;
+      background: 0;
     }
   }
 
   .task-importance {
     display: flex;
+    align-items: center;
     font-family: ${(props) => props.theme.plainBoldTextFont};
 
     .importance-icon {
@@ -326,6 +350,7 @@ const StyledModal = styled(Modal)`
       color: #b3d0ff;
       display: flex;
       align-items: center;
+      margin-right: 18px;
     }
   }
 
